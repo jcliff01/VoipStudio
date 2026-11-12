@@ -1,0 +1,14 @@
+VoipStudio, built 2026-11-11 18:22 from commit 22608ef (Current build as VoipStudio.zip, with a generated manual inside)
+The self-tests passed on this build.
+
+In this zip:
+- VoipStudio.exe            the program
+- vsx.exe                   the same analysis from a command line (vsx --help)
+- VoipStudio-Manual.html    the manual: the program's Help pages as one page, for a browser
+
+To use it on another PC:
+- It needs the .NET 10 Desktop Runtime (x64).
+- Unzip into a folder of its own and run VoipStudio.exe. To update, close VoipStudio and unzip
+  over the old folder. Settings and logs are kept elsewhere (%APPDATA%\VoipStudio) and stay.
+- Playing iLBC, G.723.1 and AMR audio needs ffmpeg: on the PATH, or in an ffmpeg folder beside
+  VoipStudio.exe. Everything else works without it.

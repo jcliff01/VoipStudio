@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VoipStudio manual</title>
+<style>
+:root { --bg: #ffffff; --ink: #1c2330; --muted: #5b6678; --line: #d9dee7; --accent: #1f6fd0; --soft: #f3f6fb; --note: #fff8e1; --noteline: #e6c65c; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14181f; --ink: #e3e8f0; --muted: #9aa6b8; --line: #2c3442; --accent: #6fb1ff; --soft: #1b212b; --note: #2a2616; --noteline: #8a7a2c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+.page { max-width: 920px; margin: 0 auto; padding: 28px 22px 80px; }
+h1 { font-size: 30px; margin: 0 0 6px; }
+h2 { font-size: 24px; margin: 4px 0 10px; }
+h3 { font-size: 17px; margin: 22px 0 6px; }
+h4 { font-size: 15px; margin: 16px 0 4px; color: var(--muted); }
+p { margin: 8px 0; }
+ul { margin: 6px 0 10px; padding-left: 22px; }
+li { margin: 3px 0; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.lead { color: var(--muted); }
+.toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 6px 26px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 20px 16px; margin: 18px 0 8px; }
+.toc h3 { margin: 10px 0 2px; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.toc ul { list-style: none; padding: 0; margin: 0; }
+.topic { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+.crumb { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.note { background: var(--note); border-left: 4px solid var(--noteline); padding: 8px 12px; border-radius: 0 6px 6px 0; }
+.top { margin-top: 18px; font-size: 13px; }
+@media print { .toc { break-after: page; } .top { display: none; } .topic { break-inside: auto; } a { color: inherit; } }
+</style>
+</head>
+<body>
+<div class="page" id="top">
+<h1>VoipStudio manual</h1>
+<p class="lead">These are the same pages as Help inside the program, where F1 on any tab opens the page for that tab. Every column header in the program also explains itself when you hover it.</p>
+<div class="toc">
+<div class="tocgroup">
+<h3>Getting started</h3>
+<ul>
+<li><a href="#welcome">What VoipStudio is</a></li>
+<li><a href="#loading">Loading captures</a></li>
+<li><a href="#capture-groups">Capture groups (more than fits in memory)</a></li>
+<li><a href="#search">Searching &amp; filtering calls</a></li>
+<li><a href="#names">Names, carriers &amp; time zones</a></li>
+<li><a href="#exporting">Exporting results</a></li>
+</ul>
+</div>
+<div class="tocgroup">
+<h3>The tabs</h3>
+<ul>
+<li><a href="#tab-dashboard">Dashboard tab</a></li>
+<li><a href="#tab-calls">Calls tab</a></li>
+<li><a href="#tab-legs">Legs tab</a></li>
+<li><a href="#tab-dtmf">DTMF tab</a></li>
+<li><a href="#stream-explorer">Stream Explorer</a></li>
+<li><a href="#tab-badcalls">Bad Calls tab</a></li>
+<li><a href="#tab-streams">RTP Streams tab</a></li>
+<li><a href="#tab-graphs">Graphs tab</a></li>
+<li><a href="#tab-endpoints">Endpoints tab</a></li>
+<li><a href="#tab-networks">Networks tab</a></li>
+<li><a href="#tab-tls">TLS tab</a></li>
+<li><a href="#tab-registrations">Registrations tab</a></li>
+<li><a href="#tab-keepalives">Keepalives tab</a></li>
+<li><a href="#tab-skinny">Skinny tab</a></li>
+<li><a href="#tab-video">Video tab</a></li>
+<li><a href="#tab-http">HTTP tab</a></li>
+<li><a href="#tab-packets">Packets tab</a></li>
+<li><a href="#tab-sip">SIP Messages tab</a></li>
+<li><a href="#call-detail">The call detail window</a></li>
+</ul>
+</div>
+<div class="tocgroup">
+<h3>Graphs reference</h3>
+<ul>
+<li><a href="#graph-metrics">Graph metrics reference</a></li>
+<li><a href="#graph-groupings">Graph groupings reference</a></li>
+</ul>
+</div>
+<div class="tocgroup">
+<h3>Settings</h3>
+<ul>
+<li><a href="#settings">Settings — every option explained</a></li>
+</ul>
+</div>
+<div class="tocgroup">
+<h3>Concepts &amp; reference</h3>
+<ul>
+<li><a href="#concept-loss">Packet loss explained</a></li>
+<li><a href="#concept-mos">MOS &amp; the E-model</a></li>
+<li><a href="#concept-correlation">How calls are correlated</a></li>
+<li><a href="#concept-monitor">Live Monitor mode</a></li>
+<li><a href="#glossary">Glossary of terms</a></li>
+<li><a href="#shortcuts">Tips &amp; shortcuts</a></li>
+</ul>
+</div>
+</div>
+<div class="topic" id="welcome">
+<p class="crumb">Getting started</p>
+<h2>What VoipStudio is</h2>
+<h3>VoipStudio in one paragraph</h3>
+<p>VoipStudio reads packet captures (.pcap / .pcapng / .cap) of VoIP traffic and turns them into calls you can read: who called whom, whether the call connected, how the audio sounded, and where anything went wrong. It reassembles SIP signaling and RTP audio the way Wireshark does, then goes further — it groups the many SIP dialogs of a call that crosses a gateway into ONE call, estimates voice quality (MOS), separates real packet loss from hold-music gaps, decodes and plays the audio, and charts trends across thousands of calls.</p>
+<p>It is built for a voice engineer chasing a specific complaint (&quot;this call sounded choppy&quot;) and for capacity/quality trend work across a whole capture.</p>
+<h3>The shape of the app</h3>
+<ul>
+<li>A toolbar across the top: open captures, search, export, settings, help.</li>
+<li>A row of TABS, each a different lens on the same analyzed capture. Start at the Dashboard, drill into Calls, open a call to see its ladder/audio/SIP, and use Graphs and Endpoints to see the big picture.</li>
+<li>Everything shares one analysis. Filtering the Packets tab, opening a call, or charting a metric all read the same in-memory model.</li>
+</ul>
+<h3>First things to try</h3>
+<ul>
+<li>Open a capture folder (toolbar → Open Folder). VoipStudio analyzes every capture in it and lands you on the Dashboard. A folder bigger than this PC can hold at once opens in groups you page through (see &quot;Capture groups&quot; in this section).</li>
+<li>Double-click any call to open its detail window (ladder diagram, audio player, SIP log, per-packet view).</li>
+<li>Hover any column header — every column has a plain-language definition tooltip.</li>
+<li>Press F1 on any tab for help about THAT tab.</li>
+</ul>
+<p class="note">Tip: nothing you do in VoipStudio changes your capture files. It is read-only analysis — explore freely.</p>
+<h3>Privacy mode (toolbar)</h3>
+<p>The Privacy toggle masks every identifying value on the OPEN capture — phone numbers, display names, IP addresses, hostnames, carrier/org names, DTMF digits — with random but CONSISTENT fakes drawn from built-in name/word libraries, so call flows stay structurally valid for screenshots and demos. The consistency rules keep flows readable: the same real number becomes the same fake everywhere (including inside raw SIP text), numbers that share trailing digits still share them, and a /24 stays one /24 (private space stays private, the lab range stays lab).</p>
+<p>Display-only: the capture files are never modified — turning privacy off re-analyzes and restores the truth. While masked, everything that re-reads the RAW files is disabled, because those bytes still hold the real data: audio playback, WAV export, DTMF audio scans, and evidence packages. The Packets grid and the HTTP full-message dialog also decode raw bytes — avoid screenshotting those two in privacy mode.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="loading">
+<p class="crumb">Getting started</p>
+<h2>Loading captures</h2>
+<h3>Ways to load a capture</h3>
+<ul>
+<li>Open Folder… — analyzes EVERY .pcap/.pcapng/.cap in the folder as one session. This is the normal path for a ring-buffer capture split into hundreds of files.</li>
+<li>Open Files… — pick one or more specific capture files.</li>
+<li>Drag and drop files or a folder onto the window.</li>
+<li>Command line — pass file or folder paths when launching; they analyze on startup.</li>
+</ul>
+<h3>What happens on load</h3>
+<p>VoipStudio reads the files in timestamp order, dedups SPAN mirror copies (see Settings), classifies every packet, reassembles SIP dialogs and RTP streams, correlates the dialogs into calls, and computes quality metrics. A progress bar in the toolbar tracks it; large multi-gigabyte sessions take a little while, and analysis runs off the UI thread so the window stays responsive.</p>
+<h3>Multi-file sessions</h3>
+<p>Files are treated as one continuous capture, so a call whose packets straddle two files is still assembled correctly. The title bar shows the folder (or the file, or a &quot;+N more folders&quot; summary). Each row's Files/File column tells you which capture a given call or packet actually lives in, so you can jump to it in Wireshark.</p>
+<p class="note">A call cut off at the very start or end of the capture window may show a blank End or missing setup — that is the ring-buffer edge, not a fault in the call.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="capture-groups">
+<p class="crumb">Getting started</p>
+<h2>Capture groups (more than fits in memory)</h2>
+<h3>What it is</h3>
+<p>A capture bigger than this PC can analyze at once opens in GROUPS: consecutive slices of the file set, in time order, each small enough for the machine. A bar appears under the toolbar — &quot;Group 2 of 4 — files 201–400 of 800&quot; — with Previous / Next buttons (Ctrl+PageUp / Ctrl+PageDown) that analyze the neighbouring slice. Everything on every tab is about the group on screen.</p>
+<h3>How the size is chosen</h3>
+<p>What limits a machine is memory at the PEAK of the scan: every file's RTP packet data has to exist until the analysis groups it into streams, and that is about a third of the capture's size in RAM (measured: 0.36 bytes of heap per byte of capture). VoipStudio refuses to go past 45% of the PC's RAM, so a set whose estimate fits that ceiling opens as ONE analysis, exactly as before; a bigger set is cut so that each group fits with a little to spare. On a 16 GB PC that is roughly 18 GB of capture per group — about 190 of the 95 MB ring files a CUBE writes; a 64 GB PC holds four times as much.</p>
+<p>If a group still runs out (the estimate is a rule of thumb; a capture with unusual traffic can cost more per byte), the analysis stops itself, learns the real cost from how far it got, cuts the set smaller and goes again — you see it in the status line.</p>
+<h3>The time bar (jump to any moment)</h3>
+<p>Under the buttons is a scrubber drawn on the capture's real TIME, read from the files themselves — not on file numbers. That distinction is the point: ring files are a fixed SIZE, so a busy ten minutes fills three of them while a quiet hour fills one, and &quot;group 4 of 9&quot; tells you nothing about when it is. On this bar the file boundaries are tick marks, so where they crowd together the capture was busy.</p>
+<ul>
+<li><b>Drag the blue band</b> to move the analyzed window somewhere else in the day.</li>
+<li><b>Drag its edges</b> to make the window wider or narrower. It stops at what this PC's memory allows and says so.</li>
+<li><b>Click anywhere on the track</b> to jump the window there, keeping its width.</li>
+<li>The line underneath always names both: the from/to of what you are looking at, and the from/to of the whole set.</li>
+</ul>
+<p>Wherever you drop it, that slice becomes a group in its own right — Previous and Next keep working either side of it — and the analysis of that slice starts as soon as you let go. Hovering a spot names the file that was being written then.</p>
+<h3>Files per group</h3>
+<p>The box in the bar shows the size the PC was given; type a smaller number and press Enter to re-cut the whole set — you stay on the group holding the file you were looking at. Smaller groups use less memory and show less of the day at once. The file picker (Open Folder) also says how many of the folder's files this PC can take in one go.</p>
+<h3>What a group edge does to a call</h3>
+<p>A call that crosses a group boundary appears in BOTH groups, each seeing only its part — exactly like a call at the edge of a ring-buffer capture: the SIP log's capture-edge notes say when the start or the end of a call was not in the slice. There is no overlap between groups. When one call matters, open the two groups around it, or pick a file range in the Open Folder dialog centred on it.</p>
+<h3>On the command line</h3>
+<p>`vsx analyze &lt;folder&gt; --group list` prints how the machine would cut the folder; `--group K` analyzes group K (with `--group-size N` to cut by a fixed count instead of by memory), and the CSV exports then cover that group.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="search">
+<p class="crumb">Getting started</p>
+<h2>Searching &amp; filtering calls</h2>
+<h3>The Find calls box</h3>
+<p>The toolbar search box filters the Calls tab live. Type plain text or a query expression and press Enter. Your recent searches are remembered (dropdown / history).</p>
+<h3>Plain text</h3>
+<p>Matches across caller and callee numbers, display names, SIP and MEDIA IP addresses (and their resolved host/carrier names), and Call-IDs. So a carrier media IP that never appears in the signaling columns will still find its calls.</p>
+<h3>Query operators</h3>
+<p>Combine these (space-separated terms all have to match):</p>
+<ul>
+<li>loss&gt;2   — worst capture loss above 2%   (also loss&lt;, &gt;=, etc.)</li>
+<li>jitter&gt;30 — worst jitter above 30 ms</li>
+<li>mos&lt;3.5  — minimum MOS below 3.5</li>
+<li>state:failed — by call state (failed, completed, cancelled, answered, ringing…)</li>
+<li>divergent — only calls where RTP and RTCP disagree about loss</li>
+<li>Numbers, IPs and names not preceded by a keyword are treated as plain text.</li>
+</ul>
+<h3>Subnets and addresses</h3>
+<p>Type a subnet the way you would write it in a router config:</p>
+<ul>
+<li>10.90.216.0/22 — anything with an address inside that subnet, on either end</li>
+<li>src:10.90.216.0/22 — only when the SENDING end is inside (dst: for the receiving end)</li>
+<li>!10.90.216.0/22 (or -10.90.216.0/22) — nothing inside that subnet is involved</li>
+<li>src:10.90.216.5 — with src: or dst: in front, a plain address means exactly that host</li>
+<li>10.90.216.5/32 — the same host on either end</li>
+</ul>
+<p>They combine with each other and with everything above: &quot;10.90.216.0/22 mos&lt;3.5&quot; is the bad-sounding calls at one site, and &quot;src:10.90.216.0/22 !dst:10.90.216.0/22&quot; is audio leaving it. IPv6 prefixes (2001:db8::/32) work the same way.</p>
+<p>A CALL counts as inside when any of its legs' SIP addresses OR any of its media addresses is. Both matter: behind a CUBE a phone never appears in the SIP the capture sees — only in the negotiated media — so a search on signalling alone would miss every one of that site's calls.</p>
+<p class="note">A plain address with no &quot;/&quot; is still ordinary text, exactly as before: it finds anything CONTAINING those characters. That is a text match, not a subnet — &quot;10.90.21&quot; finds 10.90.21.x but also every 10.90.210-219.x and 110.90.21.x. Add the prefix length when you mean the network.</p>
+<p>If a subnet is malformed (&quot;10.90.216.0/33&quot;) the search is not applied and the status bar says why, rather than quietly showing every row or none.</p>
+<p>The same syntax works in the Legs, DTMF, RTP Streams, SIP Messages, Endpoints and HTTP search boxes, the Packets tab's Address box, the Graphs tab's Subnet box, and on the command line as vsx analyze --subnet. The Packets tab's display filter also takes ip.addr == 10.90.216.0/22, Wireshark-style.</p>
+<h3>Related filters elsewhere</h3>
+<ul>
+<li>Bad Calls tab has its own symptom/cause checkboxes (see its help).</li>
+<li>Right-clicking a call, stream, endpoint or packet offers &quot;Filter … to this …&quot; actions that cross-navigate between tabs (e.g. filter the Packets tab to one stream).</li>
+<li>The Packets tab has a Wireshark-style display-filter box of its own.</li>
+</ul>
+<p class="note">Tip: sort any grid by clicking its column header; click again to reverse. Sorting by Audible Loss %, Poor Audio s, or Min MOS is the fastest way to the genuinely bad calls.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="names">
+<p class="crumb">Getting started</p>
+<h2>Names, carriers &amp; time zones</h2>
+<h3>Making addresses readable</h3>
+<p>Raw captures are full of bare IP addresses. VoipStudio can resolve them three ways, all optional and all set in Settings:</p>
+<ul>
+<li>Hosts file import — a plain &quot;ip hostname&quot; per line file (# for comments). The most reliable naming; applied live and re-applied after every analysis. Use this to label your gateways, SBCs, agents, and lab gear.</li>
+<li>Reverse DNS (rDNS / PTR) — asks your DNS server for names of LAN/private IPs. Cached to disk. Good when your internal DNS has PTR records.</li>
+<li>Whois (RDAP) — looks up the owning carrier/organization of PUBLIC IP blocks. Needs internet, cached to disk permanently. This is what fills the carrier/org columns and tells you which carrier a public endpoint belongs to.</li>
+</ul>
+<p>Once resolved, names appear everywhere — grids, ladder diagrams, graphs, exports — and searching by name works.</p>
+<h3>Time zones</h3>
+<p>Captures are stored in UTC. The display time zone (Settings) changes how EVERY timestamp in the app is shown; daylight saving is handled automatically for the chosen zone. The zone abbreviation appears next to full timestamps so there is never any doubt which zone you are reading.</p>
+<p class="note">Nothing here modifies the capture — resolution and time zone are display conveniences layered on top of the immutable packet data.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="exporting">
+<p class="crumb">Getting started</p>
+<h2>Exporting results</h2>
+<h3>Toolbar Export menu</h3>
+<ul>
+<li>Session summary (.txt) — a human-readable overview of the whole capture.</li>
+<li>Calls (.csv) — one row per correlated call with all the quality/timing columns.</li>
+<li>Streams (.csv) — one row per RTP stream.</li>
+<li>Endpoints (.csv) — per-IP totals, including the media-vs-signaling split.</li>
+<li>Networks (.csv) — the same totals per network location, using the Networks tab's grouping.</li>
+</ul>
+<h3>Exports from inside the app</h3>
+<ul>
+<li>A call's audio can be exported to WAV; a single stream too (right-click a stream → Export WAV, or export both directions from the audio player).</li>
+<li>Stream packet timing can be exported as a Wireshark-style CSV (right-click a stream).</li>
+<li>The ladder / SIP flow diagram can be saved as a PNG image.</li>
+<li>Almost every right-click menu has Copy actions — Call-ID, numbers, ip:port, a ready-made Wireshark display filter for the selected call/stream/conversation, or a whole row summary.</li>
+</ul>
+<p class="note">The copied Wireshark display filter is the fastest bridge back to Wireshark when you want to look at raw bytes of exactly the call or stream you selected here.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-dashboard">
+<p class="crumb">The tabs</p>
+<h2>Dashboard tab</h2>
+<h3>What it is</h3>
+<p>The landing page: a one-screen health summary of the whole capture. Read it first to decide where to dig.</p>
+<h3>What it shows</h3>
+<ul>
+<li>Headline totals — how many calls, streams, packets, and files; the capture's time span.</li>
+<li>Call outcome mix — how many completed, failed, cancelled, unanswered.</li>
+<li>Quality summary — how many calls have poor audio, high loss, high jitter, or low MOS.</li>
+<li>An ATTENTION list of the streams/calls most worth opening — the worst offenders, each shown by its Id. Selecting one is a shortcut into the detail.</li>
+</ul>
+<h3>How to use it</h3>
+<p>Treat the Dashboard as triage. If the outcome mix or quality summary looks wrong, jump to the Calls or Bad Calls tab and sort by the relevant column. If a specific stream is called out in the Attention list, open it directly.</p>
+<p class="note">Every number here is derived from the same analysis behind the other tabs — the Dashboard just aggregates it. Nothing is estimated differently.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-calls">
+<p class="crumb">The tabs</p>
+<h2>Calls tab</h2>
+<h3>What it is</h3>
+<p>The heart of the app: one row per CORRELATED call — meaning all the SIP dialogs (legs) of a call that crossed a gateway/B2BUA are joined into a single logical call. A call through a CUBE with an inbound and outbound leg is ONE row here, not two.</p>
+<h3>Reading a row</h3>
+<p>Columns cover identity (caller/ANI, callee/DNIS, display name, asserted identities), outcome (State, End Reason, Cause), setup timing (INVITE→100/18x/final, 200→ACK), and quality (Min MOS, Worst/Audible Loss %, Loss Bursts, L Events, Worst Jitter, Poor Audio s, Worst leg imperfect %, and what the receivers' RTCP reports say: RTCP lost, Worst RTCP loss %).</p>
+<p>Hover ANY column header for its full definition — every column is documented there, and the same definitions appear when you hover an entry in the column chooser (right-click any header), which is where you go to decide whether to switch a column ON.</p>
+<p>Rows are TINTED so the calls worth opening stand out while you scroll: pale red = choppy audio or a failure cause worth explaining, pale amber = the call failed one or more times before it worked (the Fails before success column). A 404 or a busy is not coloured — those are ordinary outcomes, and colouring them would paint half a contact-centre capture red. The red level uses exactly the Bad Calls tab's definition, so a red row here is a row that tab would list.</p>
+<p>The Asserted calling ID and Asserted called ID columns name the two SIDES of the call as the network finally asserted them. Neither can ever show the other side's party: a hub that words its re-INVITE from its own viewpoint asserts the customer back as its &quot;called&quot; party, and taken literally that filled both columns with the same person.</p>
+<h3>Working the tab</h3>
+<ul>
+<li>Double-click a row to open the call detail window (ladder, audio, SIP log, packets).</li>
+<li>Right-click → &quot;Export incident report (HTML)…&quot; writes a self-contained, shareable HTML document for that call (summary, identity, setup timing, per-stream quality, the plain-English diagnosis, and the SIP ladder image) — it prints cleanly to PDF from a browser. The same button is on the call window's Report tab.</li>
+<li>Sort by a quality column (click the header) to rank calls; Audible Loss % and Poor Audio s surface the calls a caller actually complained about, while raw Worst Loss % also counts hold/MOH gaps.</li>
+<li>To find calls whose audio really broke up without wading through hold music and one-way legs, sort by L Events or Worst leg imperfect %. L Events counts how many times the audio went missing and came back (one long hold gap is ONE event; choppy audio is dozens). Worst leg imperfect % is the share of audio seconds with a dropout on the call's worst leg, direction and device, with silence not counted as audio — so a short agent leg that broke up inside a long IVR call still stands out. It is TIME, not loss: steady single-packet loss of about 3% can touch 85% of the seconds, and both numbers are right. It stays blank for attempts that never connected and for anything with under 10 seconds of audio, so short failed calls do not crowd the top of the sort. The Settings &quot;loss event minimum&quot; sets how many lost packets in a row make one event (default 1).</li>
+<li>Use the toolbar Find box to filter (see &quot;Searching &amp; filtering&quot;).</li>
+<li>Right-click for actions: open detail, open several selected calls side by side, open the combined view of a call plus its related calls, jump to the SIP flow, find/combine related legs, filter the SIP or Packets tab to this call, copy identifiers or a Wireshark filter.</li>
+</ul>
+<h3>Correlation</h3>
+<p>The Correlated By column tells you HOW the legs were joined (Session-ID, Replaces transfer, B2BUA time-window chaining, or a rare-number tie). See &quot;How calls are correlated&quot; under Concepts for the full story and the tolerances that control it.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-legs">
+<p class="crumb">The tabs</p>
+<h2>Legs tab</h2>
+<h3>Legs tab</h3>
+<p>One row per SIP dialog, rather than per call. A call through a B2BUA is at least two legs (the inbound one and the one the B2BUA placed onward), and a contact-centre call is often four or five: carrier to CUBE, CUBE to CVP, CVP back for the agent, and so on.</p>
+<p>Use it when the CALLS tab has rolled something up and you need to see the hops: which leg carried the audio, which one failed, which one the agent actually answered.</p>
+<ul>
+<li>&quot;Group by call&quot; (on by default) keeps a call's legs adjacent and shows the WHOLE call when any one of its legs matches your search. Turn it off for a plain chronological list you can sort by any column.</li>
+<li>The Calls tab's &quot;Legs&quot; column jumps here already filtered to that call.</li>
+<li>Search matches caller, callee, display names, Remote-Party-ID, P-Asserted-Identity, Handled By, Call-ID and both addresses. &quot;call:N&quot; filters to one call, &quot;state:x&quot; to a leg state.</li>
+<li>Double-click any row to open the call window.</li>
+</ul>
+<h3>The audio columns</h3>
+<p>The right-hand block is per DIRECTION, and the arrows are relative to THIS LEG:</p>
+<ul>
+<li>→ is media the leg's CALLER side SENT.</li>
+<li>← is media sent back to them.</li>
+</ul>
+<p>Which stream belongs to which direction is decided from the SDP media endpoints, falling back to the SIP addresses when the leg's own SDP was never captured. Hover any column header for its full definition.</p>
+<p>Two of them are worth knowing before you read the numbers:</p>
+<ul>
+<li>&quot;Loss&quot; already excludes packets inside gaps the call EXPLAINS — a hold, a signalled media re-route, or a carrier suppressing silence. Those packets were never sent, so counting them made every VAD trunk look broken. The raw figure is still on the RTP Streams tab as &quot;Loss % (capture)&quot;.</li>
+<li>&quot;RTCP loss&quot; and &quot;RTCP lost&quot; can be BLANK. Blank means no in-window figure could be derived from the receiver's reports — it does NOT mean clean. See the header tooltip.</li>
+<li>&quot;L events&quot; count how many times the audio went missing and came back, and &quot;Imperfect audio %&quot; is the share of that direction's seconds with a dropout in them, long gaps (hold, one-way stretches, dead air) left out. The Calls tab's &quot;Worst leg imperfect %&quot; takes the worst of a call's legs, scoring each device on a leg separately — so a leg re-pointed from one phone to another mid-call can read higher there than in this tab.</li>
+</ul>
+<h3>Joined By</h3>
+<p>Says which correlation rule first tied this leg to its call — Session-ID, Replaces, a B2BUA chain, a hub re-connect, and so on. Search for a rule name (&quot;B2BUA&quot;) to audit every heuristic join in the capture. Protocol-asserted ties (Session-ID, Replaces) are proof; everything else is a heuristic worth checking when a call surprises you. &quot;How calls are correlated&quot; under Concepts has the full ladder.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-dtmf">
+<p class="crumb">The tabs</p>
+<h2>DTMF tab</h2>
+<h3>DTMF tab</h3>
+<p>One row per call that carried any digits, so you can answer &quot;what did the caller key in&quot; without opening calls one at a time. Sort, search and column-choose like the other grids; double-click opens the call.</p>
+<h3>The two digit columns are deliberately separate</h3>
+<ul>
+<li>&quot;Digits&quot; are the ones carried in the MEDIA — RFC 4733 telephone-event packets.</li>
+<li>&quot;INFO digits&quot; are the ones carried in SIGNALLING — SIP INFO bodies (application/dtmf-relay, application/dtmf) or KPML.</li>
+</ul>
+<p>They are NOT merged, because a B2BUA that converts RFC 2833 to SIP INFO carries the SAME keypress both ways: merging would print every digit twice. &quot;Method&quot; names whichever was seen. When a call had no media digits at all, the signalling ones are used for the summary so the row is still useful.</p>
+<h3>Reading the digit string</h3>
+<p>A space appears wherever the real silence between two keypresses ran longer than five seconds, measured end-to-start. That is usually the boundary between separate entries, so &quot;12031976 12031976&quot; means the IVR rejected the value the first time and the caller keyed it again. The underlying string is unspaced, and search ignores spacing on both sides — paste a value straight out of the grid and it will match.</p>
+<p>One keypress heard on several streams (the caller's leg and the relayed copy) is collapsed to one digit. A genuinely repeated key on ONE stream is kept: &quot;99&quot; stays &quot;99&quot;.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="stream-explorer">
+<p class="crumb">The tabs</p>
+<h2>Stream Explorer</h2>
+<h3>Stream Explorer</h3>
+<p>An audit view over MANY conversations at once, in the call window's audio language. Open it by right-clicking a waveform in a call window's Audio tab, or from the RTP Streams grid's context menu.</p>
+<p>Two entry points, answering two different questions:</p>
+<ul>
+<li>&quot;Every RTP stream live at THIS instant&quot; — did the neighbours suffer when this call did? A loss spike that hits one call is that call's problem; one that hits everything at the same second is the network's.</li>
+<li>&quot;All audio to/from THIS address for the whole capture&quot; — is this phone always bad, or was it bad once?</li>
+</ul>
+<h3>What you see before anything is decoded</h3>
+<p>Decoding is per-conversation and LAZY, and that is deliberate: one 100 MB ring file can hold several hundred conversations, and decoding them all up front would be gigabytes of audio nobody asked to hear.</p>
+<p>Until you click a conversation its lanes show a hatched placeholder band — but the REAL loss and jitter overlay and the anomaly badges are already drawn on it. That is what answers &quot;did this one have problems&quot; without decoding anything.</p>
+<p>Clicking a conversation decodes and solos it, and its group header is marked &quot;NOW PLAYING&quot;. Only a handful of conversations keep their decoded audio; older ones are released, and their lanes go back to saying &quot;audio not loaded&quot;.</p>
+<h3>Things worth knowing</h3>
+<ul>
+<li>A click on a MUTED lane's waveform SELECTS that conversation rather than seeking. Without that, clicking a row in a list of hundreds silently scrubbed whichever other conversation happened to be unmuted.</li>
+<li>&quot;Zoom to the one I pick&quot; (on by default) fits the view to the conversation you clicked. On a whole-capture time axis a three-second call is a few pixels wide next to a twelve-minute one.</li>
+<li>An empty wave box has three meanings and the lane always says which: not decoded yet, this lane's media is elsewhere on the time axis (it names where), or the wire really did carry silence.</li>
+<li>Lanes are drawn by the same code as the call window's Audio tab, on purpose — so &quot;the gap I saw on the call&quot; and &quot;the gap I saw in the audit&quot; stay comparable.</li>
+</ul>
+<h3>Back to back (no idle time)</h3>
+<p>With this ticked the conversations are laid end to end and the silence between them is squeezed out of the axis: an endpoint with eleven calls spread over two hours reads as a few minutes of audio you can scroll and listen through in one pass. Nothing inside a conversation moves — every gap, badge and RTCP mark keeps its place against its own audio — and the clock row on the axis still shows the REAL time of whatever is under the cursor, so it jumps at each boundary.</p>
+<p>Opened from the Endpoints tab (right-click → View all audio from this endpoint) it starts packed and shows the audio that endpoint SENT — what everyone else heard from it; the combo beside the checkbox switches to the audio it was sent, or to both directions. Packing lays conversations out one after another, so for a gateway carrying hundreds of calls AT ONCE the packed axis is longer than the capture itself — untick it there.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-badcalls">
+<p class="crumb">The tabs</p>
+<h2>Bad Calls tab</h2>
+<h3>What it is</h3>
+<p>A filtered Calls view showing only the calls worth opening, in TWO panes — because &quot;this call failed&quot; and &quot;this call sounded bad&quot; are two different investigations and one mixed list means scrolling past a hundred 503s to find broken audio.</p>
+<ul>
+<li>The TOP pane lists calls matched by a ticked DISCONNECT CAUSE, with the cause and the identity columns on and the audio-quality columns off — a call that never connected has no audio to rate.</li>
+<li>The BOTTOM pane lists calls matched by a ticked AUDIO SYMPTOM, with the quality columns on and the cause column off.</li>
+</ul>
+<p>Each pane sorts, right-clicks and chooses its own columns independently (right-click any header), and each carries its own count in its title. Drag the divider to give one pane more room. A call that BOTH failed and broke up appears in both panes — each one is answering a different question about it — and Export All writes it once, carrying both reasons.</p>
+<h3>Symptoms vs causes</h3>
+<ul>
+<li>Symptoms are what the listener/PBX experienced: choppy audio (audible loss over the threshold), high jitter, low MOS, one-way audio, dead air, RTP-vs-RTCP divergence, setup failures, and so on.</li>
+<li>Causes are contributing conditions the analysis can name.</li>
+</ul>
+<p>Tick the symptom checkboxes to define &quot;bad&quot; for your purpose; the list updates to match. Your checkbox selection is remembered between captures and sessions, so the tab stays tuned to what you care about.</p>
+<h3>What starts ticked</h3>
+<p>Everything that describes audio somebody heard break up. Four symptoms start UNticked because they describe the media PATH or a disagreement between two vantage points rather than a complaint: &quot;RTCP loss / capture clean&quot; (the far end counted loss this capture can prove did not happen — most often a media source renumbering its RTP sequence), &quot;Stream resets&quot; (a prompt replay or a media re-anchor), &quot;One-way audio&quot; (whole architectures are one-way by design) and &quot;Loss is one long gap&quot; (hold or music-on-hold). Tick any of them when that is what you are hunting.</p>
+<p>On the causes side, every SIP failure status and Q.850 cause starts ticked EXCEPT the ones that are ordinary call outcomes rather than faults: normal clearing, user busy, and not-found / unallocated number — dialing a number that does not exist is a dialing mistake, and on a contact-centre capture it is the single commonest failure there is.</p>
+<h3>Tuning the thresholds</h3>
+<p>CHOPPY AUDIO takes two numbers, both in Settings, and needs BOTH: what share of the stream's audio SECONDS had a dropout in them (default 25%), and how much of it really went missing (default 3% actual loss, hold/MOH and silence-suppression gaps excluded). Two, because either alone lies — a steady 3% loss touching 80% of the seconds is broken audio, the same 3% inside two seconds is one blip, and 80% of the seconds touched at 0.1% loss is a codec dropping the odd packet. Read together they are the summary: &quot;80% of the call had 3.5% audio loss&quot;.</p>
+<p>The other floors — jitter, MOS, loss bursts, the raw-loss symptom — are in Settings too. If this tab flags too much or too little, adjust those; see the Settings help.</p>
+<h3>Using it</h3>
+<p>Same row format and right-click actions as the Calls tab. Sort by Imperfect audio % (how much of the conversation had a dropout in it) or Poor Audio s to rank the genuinely painful calls first — Worst leg imperfect % beside it reads the worst single lane instead, which is how a short bad agent leg inside a long IVR call shows up. Then double-click to open and confirm in the audio player and ladder. The Asserted calling/called ID columns show the FINAL asserted identity (RPID/P-Asserted-Identity) when it differs from the bare number — who was actually connected at the end, e.g. the agent an inbound call was delivered to.</p>
+<h3>Exporting the evidence</h3>
+<ul>
+<li>Export All… writes a monitor-style package for EVERY displayed call in BOTH panes: the call's pcap, WAVs, SIP log, a problem report headed by why it was flagged, and a badcalls.jsonl index — exactly what live monitoring would have preserved.</li>
+<li>Export Selected… does the same for just the highlighted rows (Ctrl/Shift-click to pick several). Clicking into one pane clears the other's selection, so what you export is always what you are looking at.</li>
+</ul>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-streams">
+<p class="crumb">The tabs</p>
+<h2>RTP Streams tab</h2>
+<h3>What it is</h3>
+<p>One row per RTP media stream — each direction of audio is its own stream, so a normal two-way call contributes two rows here. A stream with a blank Call means no SIP setup was captured for that media (see its Notes).</p>
+<h3>Finding streams</h3>
+<p>The &quot;Find streams&quot; box at the top narrows the list. Words combine — a stream has to match all of them:</p>
+<ul>
+<li>10.90.216.0/22 — either end of the stream is in the subnet; src: / dst: for one end; ! to exclude</li>
+<li>call:12 — the streams of one call</li>
+<li>loss&gt;2, jitter&gt;30, mos&lt;3.5 — quality thresholds</li>
+<li>anything else — matched as text against the addresses and their names, codec, SSRC, side and notes</li>
+</ul>
+<p>A stream is judged by its OWN two addresses, so &quot;dst:10.90.216.0/22&quot; is the audio the site received and &quot;src:10.90.216.0/22&quot; is the audio it sent. Filtering rebuilds the list in capture order; click a column header to sort the result. See &quot;Searching &amp; filtering&quot; for the full syntax.</p>
+<h3>What each row tells you</h3>
+<p>Source/destination ip:port, SSRC, codec (with a lock symbol for SRTP), packet count, capture-observed Loss %, Loss Bursts, L events, Audible Loss %, Imperfect audio %, mean Jitter, estimated MOS, and the RTCP receiver's own numbers (cumulative lost, fraction lost) plus the RTP-vs-RTCP divergence verdict. Hover any header for the full definition.</p>
+<h3>The most useful columns</h3>
+<ul>
+<li>Loss Bursts is the quick real-vs-math discriminator: ONE burst is usually a single continuous gap (hold/MOH or a media re-route while sequence numbers kept counting); DOZENS of bursts is audio that actually broke up.</li>
+<li>L events is the same idea with sender silence suppression left out and the Settings &quot;loss event minimum&quot; applied (default 1 lost packet).</li>
+<li>Imperfect audio % is the share of the stream's audio seconds (seconds in which packets arrived) that had a dropout in them — TIME affected, not packets lost. Silence is not audio time and a long gap is never a dropout second, so it separates steady break-ups from one long hold gap.</li>
+<li>Audible Loss % excludes long gaps, so it is the loss a listener really heard.</li>
+<li>Dropout loss % is how HARD the audio was breaking up while it was breaking up: the packets lost inside the dropouts, over what those seconds should have carried. Only seconds that had a dropout AND packets arriving count, so audio that simply never came — a one-way stretch, hold, dead air — cannot reach it and it never reads 100%. Read it WITH Imperfect audio % beside it: that says how MUCH of the audio was affected, this says how BAD it was where it was. A phone dropping a packet a second is ~85% imperfect and a few % here; a line that tore for four seconds inside a good call is a few % imperfect and 50%+ here. Neither number finds the other one's case on its own.</li>
+<li>Start is in the display time zone picked on the toolbar. Two more readings sit in the column chooser (right-click a header): Start (UTC), the raw capture timestamp to quote to a carrier whose logs are UTC, and Date, which an HH:mm:ss column cannot give you when the capture crosses midnight or a group of files covers two days.</li>
+<li>RTP vs RTCP stats tells you WHERE loss happened relative to the capture point (downstream, upstream, or a SPAN gap). See &quot;Packet loss explained&quot; under Concepts.</li>
+</ul>
+<h3>Codecs it can play</h3>
+<p>VoipStudio natively decodes G.711 (µ/A-law), G.722, G.726, G.729, GSM, Opus and L16. For codecs it has no native decoder for — <b>iLBC, G.723.1, AMR-NB and AMR-WB</b> — it uses an <b>ffmpeg</b> binary if one is installed on the machine (found on PATH or a standard install location); the player then labels the audio &quot;(via ffmpeg)&quot;. Without ffmpeg those streams stay stats-only (everything except playback still works). Set the VSX_FFMPEG environment variable to point at a specific ffmpeg if needed.</p>
+<h3>Actions (right-click)</h3>
+<p>Open the owning call detail; play this stream plus its reverse direction in the audio player; scan for in-band DTMF; simulate a jitter buffer (see below); open the SIP flow; filter the Packets tab to just this stream; export the stream to WAV or its packet timing to CSV; copy ip:port, SSRC, or a Wireshark filter.</p>
+<h3>Simulating a jitter buffer (playout)</h3>
+<p>&quot;Simulate jitter buffer (playout)…&quot; (stream right-click, or the call window's Media tab) turns a bare &quot;jitter = N ms&quot; into &quot;how much audio would actually be lost.&quot; A receiver's de-jitter buffer holds each packet until its scheduled playout instant; a packet that arrives later than that is discarded and played as concealment/silence. The tool runs the captured arrival timing through buffers of several depths (10–200 ms) and shows the estimated discard % at each, plus the smallest buffer that keeps discard under 0.5%. When even the deepest buffer can't — the delay variation is too severe to hide, so expect audible loss no matter the buffer. It's pure timing math (no audio decode), and it estimates what the receiver's RTCP-XR discard% would report when the far end doesn't send XR. Deeper buffers cost mouth-to-ear delay, so the smallest adequate depth is best.</p>
+<h3>Scanning for in-band DTMF</h3>
+<p>Most DTMF is carried out-of-band as RFC 4733 telephone-events and is decoded during analysis (the DTMF column). When digits are instead sent as audio TONES in the media, right-click → &quot;Scan for in-band DTMF (decodes audio)&quot;. Because decoding audio for every stream in a large capture would be ruinous, this is on-demand: it decodes just the stream you picked, runs tone detection, and lists each digit with its time and duration. The same scan is on the Calls tab (&quot;Scan media for in-band DTMF&quot;) for a whole call's streams.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-graphs">
+<p class="crumb">The tabs</p>
+<h2>Graphs tab</h2>
+<h3>What it is</h3>
+<p>Charts trends across the whole capture. You choose a METRIC (what to measure), a HORIZONTAL axis (usually Time, or a category), an optional GROUPING (a colored series per group), and an optional PANEL split (a separate small chart per group).</p>
+<h3>Building a graph — the controls</h3>
+<ul>
+<li>Horizontal — Time (a time series) or a category (a bar per group).</li>
+<li>Metric — the quantity being measured. See &quot;Graph metrics reference&quot; for every one.</li>
+<li>Group / series — draw one colored line/area per group (per media source, per codec, per protocol, per HTTP host…). &quot;No grouping&quot; is a single series.</li>
+<li>Panels — split into a grid of small charts, one per group, instead of one busy chart.</li>
+<li>Y per panel — each panel scales to its OWN peak instead of the shared maximum, so one loud device can't crush every other panel into a flatline. Read values off each panel's own axis labels; percent metrics stay anchored at 100.</li>
+<li>Bucket — the time-slice width for time-axis metrics (finer = more detail, coarser = smoother).</li>
+<li>Top N — keep only the N most significant groups (the rest are dropped or pooled).</li>
+<li>Order — which groups win the Top N and the drawing order: Worst/Best first for quality metrics, Biggest/Smallest for volume metrics, or by name. The labels change to match the metric because &quot;worst&quot; MOS is the LOWEST, not the highest.</li>
+<li>From / To — restrict to a time range.</li>
+<li>Style — Line, Area, or 3D bars.</li>
+</ul>
+<h3>Limiting every graph to a subnet</h3>
+<p>The Subnet box on the second toolbar row limits EVERY graph on this tab to traffic touching a subnet or address — type 10.90.216.0/22 and press Enter. It takes src: / dst: for one end, ! to exclude, a plain address for one host, and several at once separated by spaces or commas (all must hold). The box turns yellow while it is on, and the graph title shows the filter, so a screenshot pasted into a ticket still says what it was limited to.</p>
+<p>What &quot;touching&quot; means depends on what the graph counts, and each is the natural reading:</p>
+<ul>
+<li>call graphs (calls started, concurrent calls, ASR, PDD...) count a call when any of its legs' SIP addresses OR its media addresses are inside</li>
+<li>stream graphs (loss, jitter, MOS, RTP packets...) count a stream by its OWN two addresses — so a site's loss graph does not pick up the carrier-side stream of a call that merely had a phone at the site</li>
+<li>packet and HTTP graphs count each packet or request by its own two addresses</li>
+<li>SIP retransmissions follow their call when they belong to one, and their own two addresses when they do not (an OPTIONS keepalive, a stray BYE)</li>
+</ul>
+<p>Clicking a spike honours it too: the calls it offers are the filtered calls, and a packet graph opens the Packets tab with the same subnet already in its Address box.</p>
+<p>The Filters... dialog is a different filter: it hides VALUES of a call or stream grouping (a cause, a codec, one IP), so it only reaches call and stream graphs — packet, HTTP and duplicate-packet graphs have no call to test. The two combine.</p>
+<h3>Saved reports</h3>
+<p>The report dropdown holds named, reusable graph configurations that persist across sessions and apply to any capture. A starter set ships with the app (call volume, ASR, post-dial delay, MOS/loss/jitter by media source, lossy media paths, throughput by protocol, SIP retransmissions, HTTP status/response/error). Save your own, and &quot;Restore common reports&quot; brings the starters back.</p>
+<h3>3D bar mode</h3>
+<ul>
+<li>Height and a base→top color gradient both encode value, so you can estimate bar height even looking straight down.</li>
+<li>Mouse: LEFT button drags/slides the scene, RIGHT button rotates/orbits.</li>
+<li>Row/column titles stay parallel to their rows and rotate when columns get crowded, to keep labels from overlapping.</li>
+</ul>
+<h3>The ? button</h3>
+<p>The ? next to the controls opens &quot;Graph metrics reference&quot; and &quot;Graph groupings reference&quot; — every metric and grouping explained.</p>
+<h3>Clicking a spike → the calls behind it</h3>
+<p>On a time chart, click a point (the tooltip says &quot;click here to open this call&quot;) to open the calls that produced that value. When several contribute, a list pops up at the cursor ranked by each call's own contribution — for a latency spike, the highest-latency calls first (with their ms); for loss, the calls that lost the most packets there; for MOS, the worst first. Calls that merely started in that second but carry no measurement for the metric are left out, so the top of the list is the real cause. One contributor opens directly. In Panels mode the click is scoped to the panel strip under the mouse — a spike in one panel never picks a point from another, and the hover popup describes only the panel you are over.</p>
+<h3>Panel titles are clickable</h3>
+<ul>
+<li>LEFT-click a panel's title (the IP/host/codec naming it) to open that value SOLO as a single full-size graph. A &quot;solo: X ✕&quot; link appears next to the Filters button — click it to return to the panel grid you came from.</li>
+<li>RIGHT-click a title for more: open solo, find all CALLS to/from that value (jumps to the Calls tab searched for it), find all LEGS (Legs tab), or copy the name.</li>
+</ul>
+<h3>The * span marker</h3>
+<p>A panel title ending in &quot;*&quot; marks an address the capture sees WHOLE: it converses with many distinct peers (10+), which is the signature of a SPAN/mirror target (the CUBE, a proxy) rather than an endpoint that happens to cross the capture point. Hover the title for the peer count. Quality numbers for a spanned address aggregate EVERYONE it talks to — rank the far-end panels to find which conversations actually hurt.</p>
+<h3>Empty buckets are gaps, not zeros</h3>
+<p>Average metrics (MOS, jitter, latency) leave buckets with NO calls as a gap in the line rather than plotting a fake 0 — an idle minute is not a MOS-0 minute. Rate metrics still draw honest zeros.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-endpoints">
+<p class="crumb">The tabs</p>
+<h2>Endpoints tab</h2>
+<h3>What it is</h3>
+<p>One row per IP address that appears anywhere in the session — as a SIP leg end or an RTP stream end. Every number on the row is that address's total, so this is the &quot;who are the players and how are they behaving&quot; view.</p>
+<h3>Calls 0 with media on the row</h3>
+<p>Calls counts the calls this endpoint is a SIP PARTY to — one end of a leg. A desk phone registered to CUCM never signals to a CUBE, so on a capture taken AT the CUBE its row reads 0 calls and non-zero &quot;Media calls&quot;: CUCM did the signalling (sme-ucm-sub1b → sme-cube-1a) while the phone's own RTP went straight to the gateway and was captured. Every quality number on that row is real; only the signalling is somebody else's. Carrier SBCs split the two deliberately for the same reason. Both columns 0 with streams present is the different case: media whose signalling was never captured at all.</p>
+<h3>What you see first</h3>
+<p>The tab opens on the WORST AUDIT IT SENT: sorted by Imperfect audio out % descending, so the device everyone else is hearing break up is the top row before you touch anything. The header carries a ▼ to say so — a filled mark is the column being sorted on, a hollow one the layer under it (sorting by a second column keeps the first as a tie-break).</p>
+<p>About twenty of the fifty-odd columns are on by default — who (address, hostname, SIP user, carrier), how much (calls, media calls, the busiest instant, failures), and how it SOUNDED going out, which is the direction this endpoint is answerable for. Actual loss-out % and Imperfect audio out % sit side by side on purpose: they are two different facts and the pair of them is the summary — &quot;80% of the call had 3.5% audio loss&quot;. Right-click any header for the rest; hovering an entry there explains what it means before you switch it on.</p>
+<h3>What it answers</h3>
+<ul>
+<li>Which carrier/org owns a public endpoint (whois columns).</li>
+<li>How many legs it originated vs received, streams it sent vs received.</li>
+<li>Its loss/jitter/MOS, both unweighted (per-stream average) and packet-weighted (Actual loss %) so one tiny lossy stream can't skew the verdict.</li>
+<li>Bad-audio calls — distinct calls where media this endpoint RECEIVED actually broke up.</li>
+<li>Bad-audio legs in / out — the same verdict scoped to LEGS (a stream is one leg's portion of one call, so a user whose short leg sits inside a long call still counts), and split by direction. &quot;Out&quot; is the one that catches a phone on a bad connection: its received columns read clean while everyone ELSE hears it breaking up — that bad audio otherwise lands on the gateway's row and drowns.</li>
+<li>What it SENT: Actual loss-out % (what it sent that never reached the capture point — a phone on a bad connection shows here while its loss-in reads clean), Bad audio s out (seconds everyone else spent hearing this device break up), Avg/Min MOS out (the quality of the audio it PRODUCES — the received-side MOS of a phone on a bad connection reads a clean 4.4, because nothing is wrong with what IT hears), and RTCP loss-out % / RTCP lost out — the receivers' own verdict about media from this IP.</li>
+<li>L events out / in / total — how many times its audio went missing and came back, each way and both together, with per-minute rates. One long hold/MOH gap is ONE event; a phone dropping packets all through its calls is hundreds. Every gap of at least the Settings &quot;loss event minimum&quot; counts (default 1 lost packet); silence suppression does not. Sort by L events total or L ev/min total to catch a bad endpoint whichever direction its audio breaks up.</li>
+<li>Imperfect audio in / out / % — the share of its audio seconds with a dropout in them (TIME affected, not packets lost). Only seconds in which packets arrived count as audio, and a long gap is never a dropout second, so hold music, one-way stretches and dead air cannot make an endpoint look broken.</li>
+<li>Worst dropout loss-in / -out % — the other half of that: of the seconds that WERE affected, how much went missing, on the worst single stream. The pair finds two different kinds of bad endpoint, and one column alone finds only one of them: a device that is continuously slightly broken reads high imperfect and low dropout loss, while one that tore hard for four seconds reads low imperfect and high dropout loss — the second is invisible in every loss column, because four bad seconds in a day average away to nothing. Worst, not pooled, for that reason. Phantom one-way audio cannot reach these columns: silence is not audio.</li>
+<li>RTCP direction, spelled out: RTCP loss-OUT % and RTCP lost out = other endpoints' reports accusing THIS endpoint's media. RTCP loss-IN % and RTCP lost in = THIS endpoint's own reports complaining about the audio it received — the only witness to loss between the capture point and the endpoint. High in both = a genuinely bad path. Blank = no report this capture can measure, never &quot;clean&quot;.</li>
+<li>MOS comes in TWO witnesses per direction. Capture-based (Avg/Min MOS, Avg/Min MOS out) scores the audio AT THE CAPTURE POINT — it cannot see the last mile. RTCP-based (Avg/Min MOS in/out (RTCP)) is built from receiver reports: &quot;in (RTCP)&quot; from the endpoint's OWN reports (sees loss between the capture and the endpoint), &quot;out (RTCP)&quot; from its listeners' reports. Capture MOS-in 4.4 with a low MOS in (RTCP) = the audio left the capture point clean and died on the way to the phone. RTCP can be fabricated and counts hold/re-points as loss — check the divergence verdicts.</li>
+<li>&quot;vertical headers&quot; (checkbox) rotates the column headers 90° and narrows the numeric columns — header names stop deciding column widths, so far more columns fit on screen.</li>
+<li>User (SIP) — the person whose MEDIA lives at this IP. Each name is taken from a SIP message that asserted an identity (RPID/P-Asserted-Identity, or From on the initial INVITE) while that same message's SDP advertised this media address — the re-INVITE that delivers a call to an agent both names the agent and points media at their phone. ONE name = that user's phone. A FEW names = a shared phone / extension mobility / hot desking. MANY names = a gateway/B2BUA media address relaying other people's calls, not a person — and identities can swap per call, so treat it as a strong hint, never proof. The endpoints CSV carries the full name breakdown with counts.</li>
+<li>Max concurrent calls — the busiest INSTANT, which is the capacity number. Calls counts the whole capture (a gateway reads thousands over a day while it never carried thirty at once); this counts how many were live at the same moment. Each call is counted over its own lifetime, the same interval the Concurrent calls graph draws, and an endpoint qualifies through a SIP leg or through media alone — so a phone that only ever appears in the RTP still counts. A call that reaches the endpoint on two legs counts once, and calls that merely touch — one ending as the next starts — are not concurrent. The endpoints CSV also carries when the peak began (UTC).</li>
+<li>DSCP in vs out — compare across endpoints to see where QoS marks get stripped.</li>
+</ul>
+<h3>&quot;Streams but no calls?&quot;</h3>
+<p>Carrier SBCs frequently split SIGNALING and MEDIA across different addresses. The Calls column counts SIP-signaling legs; a pure media address carries hundreds of calls' RTP while its Calls reads 0. That is why there is a separate MEDIA CALLS column — distinct calls whose RTP touches the endpoint. If BOTH are 0 while streams are present, it is media whose signaling was never captured at all.</p>
+<h3>Drilling down: endpoint → stream → call</h3>
+<p>DOUBLE-CLICK an endpoint to open the RTP Streams tab filtered to it — every stream it sent or received. Double-click one of those streams to open the call that stream belongs to (a stream with no SIP setup captured opens the audio player instead). That is the natural path for a media story: which of this phone's streams is bad, then which call it was.</p>
+<p>The Imperfect audio % cells are SHADED so a bad device shows up before you sort anything: yellow from 5%, amber from 20%, red from 50%. A blank cell (under 10 seconds of audio, nothing to rate) stays plain — it must not read as &quot;clean&quot;.</p>
+<h3>Actions (right-click)</h3>
+<ul>
+<li>Show this endpoint's RTP streams (the same as double-clicking).</li>
+<li>View this endpoint's AUDIO HISTORY — every conversation it took part in, laid back to back with the idle time removed, with the loss/jitter overlay, the RTCP loss marks and playback. It opens on the audio the endpoint SENT — what everyone else heard from it, and the side this capture can judge for itself, since those packets arrived here so their gaps are real (the RTCP marks on those lanes are its LISTENERS' reports). A combo switches to the audio it was sent — what its user heard, where the RTCP marks are its own — or both. The axis clock still shows the real time of each piece, so it jumps at every conversation boundary.</li>
+<li>Graph this endpoint over time — loss, audible loss, loss bursts, jitter, MOS, packets or throughput, on the Graphs tab with the address filter already applied. The Metric combo switches between them; clear the Subnet box to go back to the whole capture.</li>
+<li>Search calls involving this endpoint; filter the Packets or SIP tab to this IP; copy the IP or its carrier/org name.</li>
+</ul>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-networks">
+<p class="crumb">The tabs</p>
+<h2>Networks tab</h2>
+<h3>What it is</h3>
+<p>The Endpoints tab one level up: one row per NETWORK LOCATION instead of per address, with every column summed over the addresses inside it. A branch office whose twelve phones each look mildly lossy is ONE row here, and it reads badly — which is the point. A carrier's whole media range collapses from two hundred rows into one.</p>
+<h3>How addresses become networks (the &quot;Group by&quot; combo)</h3>
+<ul>
+<li>Settings rules, then /24 (the default once you have written any rules) — your own network rules name what they cover (Settings → network rules, e.g. 10.92.0.0/16=PSTN), and every address no rule names falls back to its own /24.</li>
+<li>Settings network rules only — one row per label, plus a single &quot;(no network rule)&quot; row holding everything unnamed. Use it to see how much of the capture your rules still miss.</li>
+<li>Assume /24 (255.255.255.0) — the default when there are no rules at all. It is a GUESS: a capture does not carry subnet masks, so nothing here can prove where one network ends. On a LAN a /24 per site is right far more often than not, which is exactly why it is offered — as a starting point, not a fact.</li>
+<li>Assume /16 (255.255.0.0) — one step wider, for a campus whose /24s split one location.</li>
+</ul>
+<p>IPv6 addresses group by /64 (or /48 for the wider choice).</p>
+<p class="note">Naming your networks in Settings turns the guesses into real answers, and the labels then show up here, on the Legs/Streams/Endpoints &quot;Network&quot; columns, and as graph groupings.</p>
+<h3>What it answers</h3>
+<ul>
+<li>Which SITE is having a bad day — sort by Imperfect audio %, L ev/min total, Actual loss-out % or Bad-audio legs out. The cells are shaded the same way as on Endpoints (yellow from 5%, amber from 20%, red from 50%; a blank cell means under 10 seconds of audio, nothing to rate).</li>
+<li>Whether a problem is one phone or the whole subnet: if the network row looks bad, drill in and see whether every endpoint inside it does.</li>
+<li>How many addresses each location actually has (Endpoints column), and which they are (Addresses column, and the full list in the networks CSV).</li>
+<li>How busy the site gets: Max concurrent calls is the peak over ALL its addresses at once, which is the number a site's trunk or bandwidth has to carry — not the per-phone peak.</li>
+</ul>
+<h3>Reading a row</h3>
+<p>Every column means exactly what it means on the Endpoints tab — they are computed by the same code, just over a set of addresses. Two consequences worth knowing:</p>
+<ul>
+<li>Calls, Media calls and the bad-audio counts are DISTINCT counts, so a call with both ends inside one network counts once, not twice.</li>
+<li>Streams out and Streams in both count a stream whose two ends are inside the SAME network — from the network's own point of view it did send it and did receive it.</li>
+</ul>
+<h3>Drilling down</h3>
+<ul>
+<li>DOUBLE-CLICK a row (or right-click → Show this network's endpoints) for the Endpoints tab showing exactly that network's addresses. The filter NAMES itself in the Endpoints Find box — a subnet as its CIDR, a rule- or carrier-named network under its own name — so the tab can never be quietly filtered without saying so. Click the box's ✕ to clear it and get every endpoint back; type over it to replace the drill-down with your own filter. Pressing Enter on the name unchanged simply re-applies it.</li>
+<li>Right-click also offers this network's RTP streams, its calls, the Packets tab filtered to it, and &quot;Graph this network over time&quot; (loss, audible loss, loss bursts, jitter, MOS, packets, throughput, RTCP-reported loss).</li>
+<li>Those filter-by-subnet actions need ONE subnet to work with. A Settings rule that covers several CIDRs has none, so they are greyed out on that row and say why — open its endpoints and drill from there.</li>
+</ul>
+<h3>Exporting</h3>
+<p>Export → Networks (.csv) writes the current grouping: the network, the grouping used, its subnet, how many addresses and which, then the same metric columns as the endpoints CSV. The CLI has it too: `vsx analyze &lt;files&gt; --networks-csv net.csv [--group-by rules|rules24|24|16]`.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-tls">
+<p class="crumb">The tabs</p>
+<h2>TLS tab</h2>
+<h3>What it is</h3>
+<p>One row per TLS session seen on the configured TLS ports (encrypted SIP on 5061 and HTTPS on 443 by default — both editable in Settings). VoipStudio parses the handshake without decrypting the payload.</p>
+<h3>What it shows</h3>
+<p>Client and server ip:port, the SNI (server name the client asked for), negotiated version and cipher, certificate details, a JA3 client fingerprint, and a verdict on the session. For encrypted SIP this tells you the signaling path is up and healthy even though you cannot read the messages.</p>
+<h3>Using it</h3>
+<ul>
+<li>Double-click (or right-click → Open TLS session detail) for the full handshake and certificate breakdown.</li>
+<li>Right-click → Filter the Packets tab to this conversation, or copy client/server ip:port, the SNI, or a Wireshark filter.</li>
+</ul>
+<h3>Why sessions land here</h3>
+<p>A TCP conversation is classified TLS when its port is in the SIP-TLS or HTTPS lists and a handshake is present. HTTPS never reaches the plaintext HTTP classifier, so encrypted web traffic shows here, not on the HTTP tab.</p>
+<p class="note">The JA3 fingerprint identifies the client STACK (which phone/SBC/library initiated the handshake), useful for spotting an unexpected device on your signaling path.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-registrations">
+<p class="crumb">The tabs</p>
+<h2>Registrations tab</h2>
+<h3>What it is</h3>
+<p>One row per REGISTER transaction in the capture — every attempt by a phone, soft client, or gateway to register (or de-register) with a registrar. This is where you answer &quot;are endpoints registering, and are any being rejected?&quot;</p>
+<h3>How a REGISTER is read</h3>
+<p>VoipStudio pairs each REGISTER request with its transaction's final response and classifies the outcome:</p>
+<ul>
+<li>Registered — accepted, a new binding (expires &gt; 0).</li>
+<li>Refreshed — accepted, a periodic refresh of a binding already seen.</li>
+<li>Deregistered — an unbind (the client asked for expires 0) that succeeded. Rows shown in gold.</li>
+<li>Rejected — a 4xx/6xx final: 403 Forbidden (bad credentials/policy), 404 (unknown AoR), 423 Interval Too Brief, 486, 603… Rows shown in red.</li>
+<li>Server error — a 5xx: the registrar failed, not the client. Red.</li>
+<li>Auth challenge — a 401/407 with no captured authenticated retry that completed. Red.</li>
+<li>Unanswered — the REGISTER got no final response at all. Red.</li>
+</ul>
+<p>The normal 401 → re-REGISTER-with-credentials → 200 handshake is recognized: only the final 200 shows as the outcome, and the intermediate 401 is marked as a superseded auth step so it never inflates the failure counts.</p>
+<h3>Finding failures fast</h3>
+<ul>
+<li>Tick &quot;Problems only&quot; to hide the healthy registrations and keep just rejects, server errors, unresolved auth challenges, and unanswered attempts.</li>
+<li>The count line summarizes the whole capture: how many registered / refreshed / deregistered / rejected / server-error / unresolved-auth / unanswered, across how many AoRs and registrars.</li>
+<li>Sort by any column (Outcome, Status, AoR, Latency ms…). Latency ms exposes a slow or overloaded registrar.</li>
+</ul>
+<h3>The columns</h3>
+<p>AoR (the identity), Client (the device), Registrar (the server), Outcome, Status, requested vs granted expiry (a granted expiry shorter than requested means the phone must re-register more often), latency, User-Agent, and the Contact binding. Hover any header for its full definition.</p>
+<h3>Actions (right-click)</h3>
+<p>Filter the SIP tab to this Call-ID (to read the actual messages), filter the Packets tab to the client↔registrar conversation, or copy the AoR, ip:port, or a Wireshark filter. Export everything via toolbar Export → Registrations (.csv); a registration summary also appears in the session summary text export.</p>
+<p class="note">Registration problems that recur for one AoR (a phone that rejects then retries in a loop, or keeps going unanswered) are a classic root cause of &quot;my phone randomly drops&quot; — sort by AoR with Problems-only on to see the pattern.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-keepalives">
+<p class="crumb">The tabs</p>
+<h2>Keepalives tab</h2>
+<h3>What it is</h3>
+<p>Two kinds of non-call SIP signaling that never appear on the Calls tab but are where a lot of &quot;why did the phones/trunk misbehave&quot; answers live:</p>
+<ul>
+<li>OPTIONS keepalives (top grid) — the heartbeat SBCs/trunks/phones use for dead-peer detection.</li>
+<li>SUBSCRIBE/NOTIFY subscriptions (bottom grid) — presence/BLF, voicemail MWI, and dialog event packages.</li>
+</ul>
+<p>Tick &quot;Problems only&quot; to hide the healthy ones in both grids at once.</p>
+<h3>OPTIONS keepalives</h3>
+<p>A device proves its peer is alive by sending SIP OPTIONS on a steady cadence and expecting a response. One row per pinger→target relationship, with a Health verdict:</p>
+<ul>
+<li>healthy — every OPTIONS answered on a steady beat.</li>
+<li>cadence gaps — the heartbeat paused far longer than its interval (missed pings — a failover, the pinger's own trouble, or a capture gap).</li>
+<li>errors — the target answered non-2xx (e.g. 503 Service Unavailable = signaling out-of-service).</li>
+<li>flapping — some OPTIONS went unanswered; the target dropped intermittently.</li>
+<li>DOWN — no OPTIONS was ever answered; the target is unreachable.</li>
+</ul>
+<p>Only SILENCE means dead — a 405/503 still proves the peer is reachable. The Interval and Longest-gap columns show the cadence and its worst interruption. This is the fastest way to answer &quot;did that SIP trunk flap, and when?&quot;.</p>
+<h3>SUBSCRIBE / NOTIFY subscriptions</h3>
+<p>One row per subscription dialog: the watched Resource, the Subscriber and Notifier, the Event package (presence / dialog=BLF / message-summary=MWI / refer…), and the Result:</p>
+<ul>
+<li>Active — accepted (2xx), subscription up.</li>
+<li>Pending — 202 accepted, authorization pending.</li>
+<li>Rejected (code) — 4xx/6xx (403 Forbidden, 404, 489 Bad Event…). A wall of rejected presence/BLF subscriptions is a classic &quot;the lamps don't light&quot; cause.</li>
+<li>Terminated (reason) — a NOTIFY ended it; deactivated/probation/rejected/giveup/noresource are the bad reasons (a plain timeout after a healthy run is normal).</li>
+<li>Unsubscribed — the watcher ended it on purpose (Expires: 0).</li>
+</ul>
+<h3>Actions &amp; export</h3>
+<p>Right-click either grid to filter the SIP or Packets tab to that peer/dialog, or copy it. Export → &quot;OPTIONS keepalives (.csv)&quot; and &quot;Subscriptions (.csv)&quot;; both also appear in the session-summary text export. Hover any column header for its full definition.</p>
+<p class="note">These run during normal analysis (pure signaling — no audio decode), so they're always populated when the capture carries OPTIONS or SUBSCRIBE traffic. A pure trunk capture may have OPTIONS but no subscriptions; a phone-side capture usually has both.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-skinny">
+<p class="crumb">The tabs</p>
+<h2>Skinny tab</h2>
+<h3>What it is</h3>
+<p>Cisco phones that don't use SIP speak SCCP (&quot;Skinny&quot;) — a binary station-control protocol to the CallManager over TCP (default port 2000). This tab decodes that traffic so those phones' registrations and calls become visible; without it they're just opaque TCP.</p>
+<p>It only populates when the capture carries SCCP. A pure SIP/trunk capture shows nothing here. The SCCP port is configurable in Settings.</p>
+<h3>Registrations / sessions (top)</h3>
+<p>One row per phone↔CallManager control connection: the phone and CallManager addresses, the device name (e.g. SEP001122334455) and type, and a status — registered, REGISTER REJECTED (in red), unregistered, or active — plus how many calls and messages it carried.</p>
+<h3>Skinny calls (bottom)</h3>
+<p>One row per call, tied together by its Skinny call reference: calling and called parties (from CallInfo), call type (inbound/outbound/forward), the final call state (OffHook→Proceed→Connected→OnHook…), dialed digits, the negotiated codec, and the RTP media endpoints the CallManager set up — the phone's own receive ip:port and the remote ip:port it transmits to. Right-click → &quot;Filter Packets tab to this call's media&quot; jumps to that call's RTP, tying the Skinny signaling to the captured audio.</p>
+<p class="note">Byte-order note: SCCP encodes IPv4 addresses little-endian; this decoder follows Wireshark's interpretation. There was no live Skinny capture available to validate against, so if a real SCCP capture ever shows reversed media IPs, say so and it's a one-line fix.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-video">
+<p class="crumb">The tabs</p>
+<h2>Video tab</h2>
+<h3>What it is</h3>
+<p>Video RTP streams (H.264 / H.265) decoded far enough to report what the video call carried and whether it was healthy. VoipStudio does not render video — it depacketizes the RTP (RFC 6184 / RFC 7798) for the facts, not the picture. Empty when the capture has no video. The audio side of a video call still appears on the RTP Streams tab as usual.</p>
+<h3>What each row shows</h3>
+<ul>
+<li>Codec — H.264 or H.265.</li>
+<li>Resolution — width×height, decoded from the H.264 SPS (best-effort; blank for H.265/VP8 /VP9, whose resolution isn't parsed yet).</li>
+<li>Frames / Keyframes / Fps — frame count (by RTP timestamp), how many were IDR keyframes, and the frame rate.</li>
+<li>Bitrate / Keyframe interval — average video bitrate and the average seconds between keyframes (a long interval means a lost packet corrupts the picture for longer).</li>
+<li>Packetization — the RTP modes seen: single, aggr (STAP-A/AP), frag (FU).</li>
+<li>Damaged frames — frames that span a lost packet (likely visibly corrupted); red when &gt; 0.</li>
+<li>Loss% — capture-observed RTP loss for the stream.</li>
+</ul>
+<h3>Using it</h3>
+<p>Double-click (or right-click → Open call detail) to open the owning call. Right-click → &quot;Filter Packets tab to this stream&quot; to see the raw RTP.</p>
+<p class="note">Resolution is parsed from the SPS and validated on synthetic streams; there was no live video capture to confirm against, so double-check it on a real video call if it matters. Frame/keyframe/bitrate/loss are robust.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-http">
+<p class="crumb">The tabs</p>
+<h2>HTTP tab</h2>
+<h3>What it is</h3>
+<p>One row per HTTP request/response seen on the configured HTTP ports (plaintext only — HTTPS is on the TLS tab). Useful in a voice capture because phones and gateways provision, fetch config, and call web services over HTTP.</p>
+<p>HTTP decoding is OPTIONAL — enable &quot;Decode HTTP traffic&quot; in Settings (and set the HTTP ports) if the tab is empty.</p>
+<h3>What each row shows</h3>
+<p>Method, URI, Host, response status and class, server think-time, client/server ip:port. Hover headers for definitions.</p>
+<h3>Seeing the FULL message</h3>
+<p>The grid is a summary. To read the complete exchange — all request and response headers AND the body — right-click → &quot;Open full request/response (headers + body)&quot;. VoipStudio re-reads the TCP stream from the start packet, follows the segments in order (handling out-of-order arrival), stops cleanly at the message boundary, and de-chunks and gunzips/inflates the body so you see the real content.</p>
+<h3>Syntax highlighting</h3>
+<p>When the body is XML or HTML, the detail view pretty-prints and color-codes it (tags, element names, attributes, values, comments) so provisioning payloads and SOAP/XML web service bodies are readable at a glance.</p>
+<h3>Actions (right-click)</h3>
+<p>Open the full message; filter the Packets tab to this conversation; filter the HTTP tab to just this host; copy the URI, host, ip:port, or a Wireshark filter.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-packets">
+<p class="crumb">The tabs</p>
+<h2>Packets tab</h2>
+<h3>What it is</h3>
+<p>The raw, per-packet view — the closest thing to Wireshark inside VoipStudio. Every packet across all loaded files, one row each, with a Wireshark-style display-filter box.</p>
+<h3>What each row shows</h3>
+<p>Time, source and destination (resolved to names when known), classified protocol (SIP/RTP/RTCP/DTMF/STUN/DNS/T38/SRTP/HTTP/…), a one-line Info summary like Wireshark's, length, flags (DUP for a SPAN mirror copy, RELAYED for a forwarded RTCP report, FRAG, TCP), RTP sequence number, Call-ID, and the file it lives in. Selecting a packet shows its hex + decode below.</p>
+<h3>Relayed RTCP</h3>
+<p>A flow-through B2BUA (a CUBE) forwards RTCP along with the media, so the same report crosses the capture twice: once on the hop its AUTHOR sent it on, again on the hop the B2BUA relayed it onto. Both packets are listed here. The second one reads [RELAYED] in Info and RELAYED in Flags, in slate text, and its decode starts with a line saying it is a relayed copy. Every loss figure, verdict, MOS and graph counts the report ONCE, at its author's hop, so the copy is never a second witness. To list them, type relayed in the display filter. rtcp &amp;&amp; !relayed gives you the reports the statistics count.</p>
+<h3>Filtering</h3>
+<p>Type a display filter and apply it, or reach this tab pre-filtered from elsewhere: right-click a call, stream, endpoint, or TLS/HTTP conversation → &quot;Filter the Packets tab to this …&quot;. The right-click menu here also builds filters from the selected packet's fields (Apply as filter / Prepare as filter to edit first).</p>
+<p>Ports: port == 5060 matches either transport. tcp.port == 5060 and udp.port == 5060 (and their .srcport / .dstport forms) match that transport only, as in Wireshark — on a gateway carrying SIP over both, that is how you separate them. The keyword udp means UDP packets; it does not include ICMP or frames that could not be decoded. Every protocol the Proto column can show has a keyword, including tls and sccp.</p>
+<h3>Subnets</h3>
+<p>Both address filters here take subnets. In the display filter, ip.addr == 10.90.216.0/22 matches either end, ip.src == / ip.dst == one end, and ip.addr != 10.90.216.0/22 means NEITHER end is inside — the way Wireshark reads them. The Address box takes the same subnet syntax as the other search boxes (10.90.216.0/22, src:, dst:, !). The display filter only accepts IPv4 values; an IPv6 packet never matches one, so &quot;!=&quot; keeps it.</p>
+<p>Clicking a point on a Graphs-tab throughput graph grouped by Source IP or Destination IP lands here with that host already in the display filter (ip.src == … / ip.dst == …).</p>
+<h3>Actions (right-click)</h3>
+<p>Apply/prepare a filter from a field; copy source or destination; copy a Wireshark filter for this conversation; copy the hex + decode text of the selected packet.</p>
+<p class="note">Use this tab when a higher-level view raises a question the summary can't answer — it is the ground truth the rest of the app is built from.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="tab-sip">
+<p class="crumb">The tabs</p>
+<h2>SIP Messages tab</h2>
+<h3>What it is</h3>
+<p>Every SIP message in the capture as a chronological list — method or status, CSeq, From/To numbers, Call-ID, and whether the message carried SDP. Retransmissions are included so you can see re-sends.</p>
+<h3>Using it</h3>
+<ul>
+<li>Filter to a call (all legs) or a single Call-ID from the right-click menu, or arrive here pre-filtered from a call's right-click &quot;Filter SIP tab to this call&quot;.</li>
+<li>Right-click to open the owning call detail, or copy the Call-ID, From/To numbers, the raw message text, or a Wireshark Call-ID filter.</li>
+</ul>
+<h3>The richer SIP views</h3>
+<p>For a readable, annotated dialog use the call detail window instead:</p>
+<ul>
+<li>The SIP Flow / ladder diagram draws the messages as arrows between hosts over time.</li>
+<li>The SIP Log inside a call is a syslog-style dump of every message on the call, syntax highlighted, with plain-English dictionary notes inline (Q.850 causes, codec names, hold/one-way SDP meanings). Each message is tagged SENT or RCVD relative to the call's anchor host (the B2BUA/CUBE the capture sits at), and each Call-ID keeps its own color so interleaved legs separate at a glance. If the capture doesn't contain the whole call, a dark-orange CAPTURE NOTE banner at the top and/or bottom says the START or the END of the call was not captured — so a ring-buffer-truncated dialog is never misread as a broken call.</li>
+</ul>
+<p class="note">This flat tab is best for searching the whole capture's signaling; the call detail's SIP Log/ladder is best for understanding ONE call.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="call-detail">
+<p class="crumb">The tabs</p>
+<h2>The call detail window</h2>
+<h3>Opening it</h3>
+<p>Double-click any call (or right-click → Open call detail). It is a multi-tab window about one call, gathering everything the analysis knows.</p>
+<h3>What is inside</h3>
+<ul>
+<li>Ladder / SIP flow — messages drawn as arrows between hosts down a time axis; the classic &quot;what happened, in order&quot; picture. Exportable as PNG. Tick &quot;RTCP reports&quot; to add the RTCP as dotted arrows between the media columns, one per RTCP packet (an SR and its report block are one arrow): slate = the hop's own report, the one the statistics count (red above 5% fraction lost); grey dash-dot = a RELAYED copy a flow-through B2BUA forwarded onto that hop. It is labelled with the stream it was counted on, and nothing counts it again. Each direction is thinned to about 20 arrows (every report above 5% lost is kept), and the first arrow of a thinned direction says how many it shows. Click an RTCP arrow to see what it reports and whether it is counted. The box stays as you left it.</li>
+<li>SIP Log — the full syslog-style message dump, syntax-highlighted, with dictionary notes and SENT/RCVD tags (see the SIP Messages tab help).</li>
+<li>Audio — plays the call's media. Each stream is a waveform track you can play, seek, and export (◄ left, ► right, or ↔ both sides as one stereo WAV). Right-click a stream/segment → &quot;jump to the SIP message that set up this stream&quot; to land on the exact INVITE/SDP that advertised that media endpoint.</li>
+</ul>
+<h3>Reading the audio lanes — overlays and badges</h3>
+<p>Two loss witnesses share each lane, on the same 0–20% band scale:</p>
+<ul>
+<li>RED columns rising from the BOTTOM = loss the CAPTURE saw (sequence gaps); explained gaps (hold/MOH, VAD) paint muted gray instead of red.</li>
+<li>PURPLE columns descending from the TOP = the far-end receiver's OWN RTCP verdict, one column per report interval, drawn for EVERY report. Small vertical ticks mark each report boundary — clean intervals show just the tick, so the report cadence stays visible. HOVER any column (or tick) for the full report: who reported, whose audio, the interval, fraction and cumulative lost, and the reported jitter. A solid purple strip means every report claimed ≥20% (the band clamps). Purple on top with a clean bottom = the loss happened DOWNSTREAM of the capture point; symmetric spikes = both witnesses agree.</li>
+</ul>
+<p>Clickable badges (each jumps to the exact packet):</p>
+<ul>
+<li>L (red) — a capture-side loss burst of ≥3 packets.</li>
+<li>R (purple) — one RTCP receiver report claiming more lost than the R-badge threshold (Settings, default 10%); the hover names who reported and whose audio it reports on. The mirror shows every report regardless — R just marks the ones worth clicking.</li>
+<li>S (gold) — a sequence-number jump (prompt replay / device restart).</li>
+<li>J (dark cyan) — an RTCP report claiming jitter above the Bad-jitter threshold (Settings), rate-limited to one badge per 5 s.</li>
+<li>B (dark gray) — the BYE, placed on the lane of the party that HUNG UP; the hover names them and the click opens the BYE in the call's packets.</li>
+<li>Report tab → &quot;Export call package&quot; writes one stereo WAV (the caller's voice left, the other side right — panned per SPEAKER, so a relayed copy of a voice shares its ear), a SIP log of every message on ALL legs (both sides, full raw text), and a pcapng of the call's packets. Separate -left/-right mono files are no longer written: they were exactly the stereo file's two channels. Use the Audio tab's ◄ / ► buttons to export one side.</li>
+<li>Packets / timeline — the call's packets and a timeline of its events. A relayed RTCP copy appears in both: marked [RELAYED] in Packets, and on the Timeline as &quot;RTCP (relayed copy)&quot; on the hop it crossed. Those Timeline rows are never badged, and each one names the stream where the same report was counted.</li>
+</ul>
+<h3>The audio player</h3>
+<p>Loading audio for a very long call builds all streams in parallel and shows progress. The waveform makes dead air, one-way audio, and choppy stretches visible before you even listen. Playing a stream plus its reverse direction together is the quickest way to confirm what a caller actually heard.</p>
+<p class="note">The &quot;jump to setup message&quot; action answers &quot;which SDP told this media where to go?&quot; — it finds the message whose SDP advertised the stream's destination endpoint, because the receiver is the side that tells the sender where to aim.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="graph-metrics">
+<p class="crumb">Graphs reference</p>
+<h2>Graph metrics reference</h2>
+<h3>Call volume &amp; outcome</h3>
+<ul>
+<li>Calls started /s — new call attempts (first INVITEs) per second. The offered-load curve; group by cause to see failure spikes.</li>
+<li>Concurrent calls — how many calls are simultaneously up. The capacity / busy-hour view.</li>
+<li>ASR % (answered/attempts) — Answer-Seizure Ratio: the share of attempts that answered. The headline completion metric; HIGH is good.</li>
+<li>ACD — avg talk time (s) — Average Call Duration of answered calls.</li>
+</ul>
+<h3>Setup timing (milliseconds)</h3>
+<ul>
+<li>Post-dial delay (ms) — INVITE to ring/answer; how long the caller waited hearing nothing. Slow routing shows here.</li>
+<li>SIP: INVITE → 100 Trying — far-end transport round-trip + initial processing.</li>
+<li>SIP: INVITE → 18x ringing — time to the first 180/183; how long routing took before alerting.</li>
+<li>SIP: INVITE → final response — to the first 200 OK or failure (includes human answer time for answered calls).</li>
+<li>SIP: 200 OK → ACK — answer to the caller's ACK; large values mean a slow caller-side device or path.</li>
+</ul>
+<h3>Audio quality</h3>
+<ul>
+<li>Average MOS — estimated voice quality 1–5 (E-model). HIGH is good; below ~3.5 draws complaints. See &quot;MOS &amp; the E-model&quot;.</li>
+<li>Packet loss % (capture-observed) — loss from RTP sequence gaps AT the capture point.</li>
+<li>Packet loss % (RTCP receiver-reported) — loss the far-end RECEIVER reported. Compare with the capture number to locate loss (see &quot;Packet loss explained&quot;).</li>
+<li>Audible loss % — loss counting only short bursts, excluding hold/MOH gaps: what a listener actually heard. The one to trust for &quot;bad audio.&quot;</li>
+<li>Loss bursts /s — runs of consecutive lost packets per second. 1 = a single gap (hold/re-route); many = audio breaking up repeatedly.</li>
+<li>RTP jitter (ms) — mean RFC 3550 interarrival jitter. Above ~30 ms strains jitter buffers, above ~60 ms is usually audible.</li>
+<li>RTCP lost packets /s — packets the far-end RECEIVERS said went missing (cumulative-lost deltas from their receiver reports), charged to the MEDIA SENDER whose packets they were. Late arrivals that &quot;un-lose&quot; packets are never re-counted. Group by Media Source IP to rank which senders' media is dying en route — independent of where the capture sits.</li>
+<li>RTCP loss complaints /s — how often receivers filed a report claiming NEW loss, charged to the REPORTING endpoint (so Media-Source/Destination groupings swap sides: the series names are the complainers). Many complaints from one endpoint = that endpoint's inbound path hurts; one sender charged by many reporters (see the lost metric) = the sender's side hurts. Beware fabricated RTCP from middleboxes.</li>
+</ul>
+<h3>Traffic &amp; signaling health</h3>
+<ul>
+<li>RTP packets /s — media packet rate.</li>
+<li>SIP INVITEs /s (initial) — NEW call attempts per interval, retransmissions and re-INVITEs excluded. The calls-per-second number carriers and licenses cap; graph it before blaming a carrier for rejecting bursts.</li>
+<li>SIP retransmissions /s — re-sent SIP transactions; packet loss or unresponsive peers on the signaling path.</li>
+<li>Duplicate packets /s — SPAN mirror duplicates per second (a capture-quality metric, not a network fault).</li>
+<li>Packets /s (all protocols) — total captured packet rate.</li>
+<li>Throughput (KB/s captured) — captured bytes/sec. Group by Protocol or Port to see where bandwidth goes.</li>
+</ul>
+<h3>HTTP (needs HTTP decoding enabled)</h3>
+<ul>
+<li>HTTP requests /s — request rate; group by status class to see error waves.</li>
+<li>HTTP response time (ms) — server think-time (request → response); group by host.</li>
+<li>HTTP error % (status ≥ 400) — share of responses that were errors.</li>
+</ul>
+<p class="note">On a categorical (non-time) horizontal axis these same metrics read as counts/totals per category — e.g. &quot;Calls (count)&quot; instead of &quot;Calls started /s.&quot;</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="graph-groupings">
+<p class="crumb">Graphs reference</p>
+<h2>Graph groupings reference</h2>
+<h3>What a grouping does</h3>
+<p>A grouping turns one metric into several — one colored line/area (as a Series) or one small chart (as a Panel) per group value. Pick the dimension you want to compare across.</p>
+<h3>Call / signaling groupings</h3>
+<ul>
+<li>Side (Left/Right/PSTN) — the network side of the B2BUA from your network rules.</li>
+<li>SIP Source IP / SIP Destination IP — signaling endpoints.</li>
+<li>Disconnect cause — the Q.850 / SIP cause the call ended with. Great with call-volume and failure metrics.</li>
+<li>Disposition — the call outcome class (completed/failed/cancelled/…).</li>
+</ul>
+<h3>Media groupings</h3>
+<ul>
+<li>Codec — the audio codec.</li>
+<li>Media Source IP / Media Destination IP — where RTP came from / went to (often different devices than the SIP endpoints).</li>
+<li>Media path (src → dst) — a whole sending→receiving media pair as ONE dimension. Pair this with the Loss-bursts or Audible-loss metric to find exactly which paths carry real packet loss.</li>
+</ul>
+<h3>Traffic groupings</h3>
+<ul>
+<li>Protocol (SIP/RTP/HTTP/…) — split throughput/packets by protocol.</li>
+<li>Port (service side) — split by the service-side TCP/UDP port.</li>
+<li>Source IP / Destination IP — split by each PACKET's own source or destination address: every packet, signaling and media alike (RTP comes from the streams, so lean mode still counts it). This differs from the SIP/Media groupings, which group calls and streams. Use it to find who is sending or receiving the traffic. Labels use the resolved names, and addresses that share a hosts-file name merge into one series. Click a point or a bar to open that host's packets in the Packets tab (ip.src == … / ip.dst == …). The &quot;(others)&quot; fold and IPv6 hosts cannot be narrowed that way, and the status bar says so.</li>
+</ul>
+<h3>HTTP groupings (with HTTP metrics)</h3>
+<ul>
+<li>HTTP status class (2xx/3xx/4xx/5xx), HTTP status code, HTTP method, HTTP host, HTTP server IP.</li>
+</ul>
+<p class="note">The Series and Panel combos only offer groupings that make sense for the chosen metric — HTTP groupings appear only with HTTP metrics, media groupings only with call/media metrics — so you can't build a meaningless chart.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="settings">
+<p class="crumb">Settings</p>
+<h2>Settings — every option explained</h2>
+<p>Open Settings from the toolbar. Options fall into groups. Changes to naming and time zone apply live; anything marked &quot;re-analysis required&quot; only takes effect the next time you analyze a capture.</p>
+<h3>Network labels (CIDR → name)</h3>
+<p>A list of &quot;CIDR = Label&quot; rows. A leg's far end is labeled with the first matching network instead of a generic Left/Right, so sides read as real names on every grid, ladder and graph. Examples: 8.49.96.0/24 = Lumen, 10.92.0.0/16 = ATT-SBC, 192.168.5.0/24 = Branch-Dallas. Applies on the next analysis. (Hosts-file names override these with per-host names.)</p>
+<h3>Naming &amp; time</h3>
+<ul>
+<li>Display time zone — how timestamps are shown; DST handled automatically. It lives on the main TOOLBAR (not in Settings) and applies live to the tabs. A call window that is already open keeps the zone it was opened in until you reopen it, and CSV/report exports stay UTC. Captures are UTC underneath — only the display changes.</li>
+<li>Import Hosts file — &quot;ip hostname&quot; per line (# comments). The most reliable naming, re-applied after every analysis.</li>
+<li>Whois for public IPs (RDAP) — fills carrier/org columns; needs internet; cached to disk forever.</li>
+<li>Reverse DNS for LAN/private IPs (PTR) — asks your DNS server; cached to disk.</li>
+</ul>
+<h3>Correlation tolerances (re-analysis required)</h3>
+<p>These control how separate SIP dialogs get joined into one call. Defaults suit most Cisco/CUBE designs; widen them for slow gateways, tighten them if unrelated calls merge.</p>
+<ul>
+<li>B2BUA chain window (s) — max gap from an incoming INVITE to its outbound leg for the two to be chained into one call.</li>
+<li>Rare-number floor (legs) — a caller number seen at or below this many legs is always treated as &quot;rare&quot; (customers call back a few times), which lets it tie legs together across number translation.</li>
+<li>Rare-number ceiling (% of legs) — above the floor, &quot;rare&quot; means the number is at most this share of ALL legs, so the definition scales with corpus size.</li>
+<li>Transfer end-sync tolerance (s) — a delayed queue/agent leg joins its call when both legs END within this window.</li>
+<li>Transfer window grace (s) — how long after a REFER the transferred INVITE may arrive and still be linked.</li>
+<li>Related-call adjacency (s) — max gap between the starts of related calls (transfers/loopbacks) for them to be marked related.</li>
+</ul>
+<h3>Capture cleanup</h3>
+<ul>
+<li>Duplicate window (ms) + Enable duplicate-packet removal — SPAN taps often mirror both ingress and egress, so each packet appears twice. Copies within this window are dropped so counts and loss aren't doubled. Set the window to 0 or disable only if you are sure there is no mirroring.</li>
+</ul>
+<h3>Bad-audio / bad-call thresholds</h3>
+<p>These define what the Bad Calls tab, the endpoints &quot;bad-audio&quot; columns, and Poor Audio s count as bad:</p>
+<ul>
+<li>Poor-audio threshold (audible loss %) — above this, audio is classified CHOPPY.</li>
+<li>Poor-audio floor (lost packets) — AND at least this many audible lost packets, so a single dropped packet in a tiny prompt doesn't register.</li>
+<li>Bad-call jitter threshold (ms) — mean jitter above this fires the jitter symptom.</li>
+<li>Bad-call MOS floor — MOS below this fires the low-MOS symptom.</li>
+<li>Choppy audio: imperfect audio at least (%) — what share of a stream's audio SECONDS had a dropout in them, for the Bad Calls &quot;choppy audio&quot; symptom and the red rows on the Calls tab. Default 25%.</li>
+<li>Choppy audio: actual loss at least (%) — AND at least this much really missing, with hold/MOH and silence-suppression gaps excluded. Default 3%. BOTH must be met: a steady 3% loss touching 80% of the seconds is broken audio, the same 3% inside two seconds is one blip, and 80% of the seconds touched at 0.1% loss is a codec dropping the odd packet.</li>
+<li>Loss event minimum (lost packets) — how many lost packets in a row make one L EVENT, and make a second of audio count toward Imperfect audio %, on the Calls, Legs, RTP Streams, Endpoints and Bad Calls tabs and in the CSV exports. 1 (the default) counts every dropped packet; raise it to ignore single-packet blips. Applies immediately — no re-analysis.</li>
+</ul>
+<h3>Ports (re-analysis required)</h3>
+<p>Comma-separated lists; ranges allowed (e.g. &quot;5060-5091, 5094&quot;). These tell the classifier which ports carry which protocol:</p>
+<ul>
+<li>SIP ports — plaintext SIP signaling; default 5060-5091.</li>
+<li>SIP-TLS ports — encrypted SIP; routed to the TLS inspector; default 5061.</li>
+<li>HTTP ports — plaintext HTTP to decode (with HTTP decoding on).</li>
+<li>HTTPS ports — TLS-classified and handshake-inspected; default 443. HTTPS never reaches the plaintext HTTP decoder.</li>
+</ul>
+<h3>Optional decoders (re-analysis required)</h3>
+<ul>
+<li>Decode HTTP traffic — populates the HTTP tab and HTTP response graphs. Off by default; turn on when you care about phone provisioning / web-service traffic.</li>
+<li>Reassemble T.38 fax (UDPTL/T.30) — the heaviest optional step; enable only when analyzing fax.</li>
+</ul>
+<h3>Memory — disk-streaming (low-memory) mode</h3>
+<p>Controls where the large per-packet index and RTP data live:</p>
+<ul>
+<li>Auto (default) — kept in RAM, but spilled to disk automatically when a capture is large relative to THIS machine's memory (the same point the lean index engages).</li>
+<li>Always on — always spill, for weak PCs / little RAM.</li>
+<li>Off — always keep everything in RAM (fastest, needs the most memory).</li>
+</ul>
+<p>When on, those big data blocks are memory-mapped to temp files instead of the managed heap, so the resident set stays small and a capture much bigger than RAM can open — the OS pages the data in and out on demand. It is slower than pure RAM (disk seeks), and the analysis results are exactly the same either way. Temp files are deleted when you close the capture. On a sample capture this cut the in-RAM footprint by about 40% with byte-identical results.</p>
+<p class="note">If a tab or column is unexpectedly empty, the cause is almost always here: HTTP decoding off, the relevant port not in its list, or whois/rDNS disabled. Change the setting and re-analyze.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="concept-loss">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>Packet loss explained</h2>
+<h3>Three different &quot;loss&quot; numbers, and why they differ</h3>
+<p>VoipStudio reports loss more than one way ON PURPOSE, because where you capture changes what you see.</p>
+<ul>
+<li>Capture-observed loss — gaps in RTP sequence numbers AT the capture point (your SPAN). This is loss BEFORE the packets reached your tap. Loss that happens downstream of the tap, toward the receiver, is invisible here.</li>
+<li>RTCP receiver-reported loss — the far-end RECEIVER's own count, carried in its RTCP reports. This is the receiver's real experience, wherever the loss happened. A report that a flow-through B2BUA relays onto the next hop is counted ONCE, at its author's hop. The relayed copy is still listed, marked relayed, in the Packets grid, the call Timeline and the Call Flow's RTCP view.</li>
+<li>Audible loss — capture loss counting only SHORT bursts (≤ ~1 s), with long continuous gaps excluded. This is the choppiness a person actually hears.</li>
+</ul>
+<h3>The divergence verdict (RTP vs RTCP)</h3>
+<p>Comparing capture loss with RTCP loss LOCATES the loss:</p>
+<ul>
+<li>consistent — both agree.</li>
+<li>RTCP loss / capture clean — the capture is clean but the receiver lost packets: loss is DOWNSTREAM of your tap (between tap and receiver).</li>
+<li>capture loss / RTCP clean — you saw gaps the receiver didn't: packets bypassed your tap (a SPAN gap), not a real network loss.</li>
+<li>both report loss — loss is UPSTREAM of the tap (before it), and reaches the receiver.</li>
+</ul>
+<h3>Real loss vs math loss (the Loss Bursts trick)</h3>
+<p>A call on hold, playing MOH, or re-routing media keeps counting RTP sequence numbers across a gap, which looks like huge &quot;loss&quot; but nobody heard anything. The tell is BURST COUNT: ONE big burst is almost always such a benign gap; DOZENS of small bursts is audio that genuinely broke up. That is why Audible Loss % (short bursts only) and Loss Bursts exist — sort by them, not by raw Loss %, to find calls a caller complained about.</p>
+<h3>L events and imperfect audio</h3>
+<p>An L EVENT is one time the audio went missing and came back: a gap of at least the Settings &quot;loss event minimum&quot; (default 1 lost packet). Five hundred packets lost in one hold gap is one event; five hundred lost a packet or two at a time between received packets is hundreds. Gaps where the sender simply stopped sending during silence (VAD/DTX — its media clock froze) are not events, because nothing was lost.</p>
+<p>IMPERFECT AUDIO % turns that into a share of TIME: of the seconds that carried audio (seconds in which packets arrived), how many were not perfect — how many had at least one short L event in them. Silence — hold/MOH, a one-way stretch, dead air — is not audio time, and a long gap is never a dropout second, so ten seconds of silence can neither read as ten broken seconds nor water down the real dropouts around them. It is measured per stream, per leg and direction, and per endpoint; the Calls tab shows the WORST leg, direction and device, so a bad agent leg is not diluted by a long IVR leg on the same call.</p>
+<p>IT IS NOT A LOSS PERCENTAGE, and the two look very different on the same call. A phone that drops single packets steadily loses about 3% of its packets while touching about 85% of its seconds: &quot;Loss %&quot; answers how much audio went missing, &quot;Imperfect audio %&quot; answers how much of the time was affected. Raise the loss-event minimum to 2 and only the bigger gaps count, which is the quickest way to see whether the damage is scattered single packets or real bursts.</p>
+<p>Every imperfect-audio percentage needs at least 10 seconds of audio behind it and is blank below that: one dropout in a 4-second ringback stub would otherwise read 25%. The Calls tab's worst-leg figure is also blank for a call that never connected (failed or cancelled with no leg answered) — ringback or an announcement on an attempt is not a conversation.</p>
+<p class="note">Sequence jumps of a few thousand are treated as stream RESTARTS (prompt replays, device restarts), not loss, so a re-used SSRC doesn't read as a catastrophic drop.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="concept-mos">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>MOS &amp; the E-model</h2>
+<h3>What MOS means here</h3>
+<p>MOS (Mean Opinion Score, 1–5) is an ESTIMATE of voice quality. VoipStudio computes it from the ITU E-model (G.107): it builds an R-factor from the codec, the AUDIBLE loss, and the jitter, then maps R to a MOS. Rules of thumb: 4.4 is perfect G.711, ~4.0 is good, below ~3.5 is where users start to complain, below 3.0 is bad.</p>
+<h3>Why it uses AUDIBLE loss</h3>
+<p>If MOS were driven by raw sequence-gap loss, every call that sat on hold would score terribly. By feeding the E-model burst-adjusted (audible) loss, a hold/MOH gap doesn't drag the score down — so a low MOS here means audio that a listener would actually judge poor. Genuinely unexplained dead air is flagged separately (Notes / Bad Calls) rather than being folded into MOS.</p>
+<h3>It is an estimate, not a verdict</h3>
+<p>MOS is a model. Treat a low MOS as a strong POINTER — then confirm by opening the call and listening (the audio player) and by checking the loss/jitter columns and the RTP-vs-RTCP divergence. The number tells you where to look; your ears and the packets tell you what actually happened.</p>
+<p class="note">The E-model MOS reacts to loss and jitter, so it and the Bad Calls thresholds move together — if you retune the poor-audio/jitter thresholds in Settings, the calls that look &quot;bad&quot; change accordingly.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="concept-correlation">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>How calls are correlated</h2>
+<h3>The problem</h3>
+<p>One phone call rarely equals one SIP dialog. A call through a CUBE/SBC has at least two Call-IDs (inbound leg + outbound leg); transfers, forking, and multiple gateway hops add more. VoipStudio joins these dialogs into ONE logical call so the Calls tab shows calls, not fragments.</p>
+<h3>How legs get joined (strongest to weakest)</h3>
+<ul>
+<li>Session-ID — RFC 7989 end-to-end Session-ID header matched across legs. A UUID half only counts when it is DISCRIMINATING (carried by at most 2 legs) — media/conference resources that stamp one UUID onto many legs are deliberately ignored.</li>
+<li>Cisco-Guid — Cisco's per-call GUID, when the platforms propagate it.</li>
+<li>Replaces / Referred-By — a transfer that explicitly names the dialog it replaces.</li>
+<li>SSRC relay — the same media SSRC observed on both sides of a flow-through gateway.</li>
+<li>B2BUA time-window chaining — an incoming INVITE and its outbound INVITE through the same gateway within the chain window, only when the pairing is ONE-TO-ONE.</li>
+<li>Rare-number tie — a corpus-RARE number links legs even when the DNIS was translated between them.</li>
+</ul>
+<h3>What it is GOOD at</h3>
+<ul>
+<li>Anything with a protocol identifier: Session-ID, Cisco-Guid, Replaces. These joins are graded &quot;protocol&quot; in the call report's LEG CORRELATION EVIDENCE section and are essentially always right.</li>
+<li>Quiet-to-moderate gateways where one INVITE in produces one INVITE out — the time window plus synchronized teardown chains these reliably.</li>
+<li>Distinctive caller numbers: an ANI that appears on only two legs in the whole capture ties them across full digit translation.</li>
+<li>Announced transfers (REFER / Replaces) — grouped into one call family with the parent.</li>
+</ul>
+<h3>What it is BAD at — and why</h3>
+<ul>
+<li>A REPEATING ANI on inbound calls. One customer redialing, a dialer, a carrier test number, or a masked/shared trunk ANI: once a number appears on many legs it stops being &quot;rare&quot; and the rare-number rule refuses it (by design — tying on a common number would weld unrelated calls together). Result: legs whose only link was that number stay SPLIT when the DNIS was translated between them. The floor/percent knobs in Settings decide where &quot;rare&quot; ends; loosening them trades splits for the worse failure, false merges.</li>
+<li>Two simultaneous calls between the SAME numbers through the same gateway inside the chain window: the pairing is ambiguous, the one-to-one requirement refuses it, and both stay split. Deliberate — over-grouping poisons every downstream number.</li>
+<li>Gateways that regenerate everything: new Call-ID, no Session-ID or GUID, translated numbers, transcoded media (no SSRC passthrough). There is nothing left to join on but timing, and on a busy system timing alone is ambiguous — expect splits.</li>
+<li>One-sided captures: if the SPAN only sees one side of the gateway, the other leg was never captured. No rule can join what is not there (the call shows legs:1; searching &quot;carrier legs:1 related&quot; surfaces likely other halves seen elsewhere).</li>
+<li>Parallel forks reusing a to-tag and session-timer-expiry teardowns still have rough edges in leg SPLITTING (one dialog mistaken for one leg).</li>
+</ul>
+<h3>How to see WHY a call joined (or did not)</h3>
+<ul>
+<li>Calls tab → Correlated By column; Legs tab → Joined By per leg.</li>
+<li>The call's problem report has a LEG CORRELATION EVIDENCE section listing every join with its rule and a protocol-vs-heuristic grade — trust &quot;protocol&quot;, verify &quot;heuristic&quot; on calls that matter.</li>
+<li>Right-click a call → &quot;Find related legs / combine&quot; to inspect and manually merge.</li>
+</ul>
+<h3>What can be done</h3>
+<ul>
+<li>The single biggest fix is configuration, not tuning: enable RFC 7989 Session-ID end to end (on a CUBE: `session-id` under voice service voip → sip). Every heuristic join it replaces becomes a protocol join, immune to all of the above.</li>
+<li>On all-Cisco paths, Cisco-Guid propagation gives a similar guarantee.</li>
+<li>Capture at a vantage that sees BOTH legs of the gateway you care about.</li>
+<li>Tune the Settings tolerances to the corpus: busy gateway → tighter B2BUA window; a corpus full of repeating ANIs → keep the rare-number percent strict; legs of one call splitting on a quiet system → widen the window slightly. Changes require re-analysis.</li>
+<li>Over-grouping remains the failure mode the defaults are biased against: when in doubt the engine splits, because a wrong merge silently corrupts two calls' stats while a split is visible and repairable.</li>
+</ul>
+<p class="note">If a call looks mis-correlated, right-click it → &quot;Find related legs / combine&quot; to see and adjust exactly which dialogs belong together.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="concept-monitor">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>Live Monitor mode</h2>
+<h3>What it is</h3>
+<p>Beyond analyzing saved captures, VoipStudio has a live Monitor mode that watches traffic as it is captured (via dumpcap) and triages calls in real time, raising alerts when calls go bad against dynamic thresholds.</p>
+<h3>Cross-stream loss-spike detection</h3>
+<p>Monitor mode watches for a network-wide loss EVENT: when many distinct active streams all lose packets in the SAME second, that is not one bad call — it is the network hiccuping under everyone at once. VoipStudio flags such spikes (and marks them RTCP-confirmed when receivers independently agree the loss was real) and records them to a network-events log that survives the monitor's rolling buffer budget.</p>
+<h3>Why it matters</h3>
+<p>A single mid-capture second where hundreds of streams all drop is the signature of a brief forwarding interruption (a reconvergence, a scheduled job, a link blip). Seeing it as ONE event — instead of hundreds of separately &quot;bad&quot; calls — points straight at the network rather than at any phone.</p>
+<p class="note">The same detection logic runs when reviewing a saved capture, so a loss spike that hit the whole capture is identified as a shared event rather than blamed on individual calls.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="glossary">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>Glossary of terms</h2>
+<h3>Telephony identity</h3>
+<ul>
+<li>ANI — Automatic Number Identification: the calling party number (SIP From).</li>
+<li>DNIS — Dialed Number Identification Service: the called number (SIP To / request URI).</li>
+<li>Asserted identity — the connected-line identity after transfer/retarget (Remote-Party-ID with an explicit party=calling/called tag).</li>
+</ul>
+<h3>Signaling</h3>
+<ul>
+<li>SIP — the call-control protocol (INVITE/BYE/etc.).</li>
+<li>SDP — the media-offer body inside SIP messages (codecs, IP:port for RTP).</li>
+<li>CSeq — SIP command sequence number + method; ties responses to requests.</li>
+<li>B2BUA / CUBE / SBC — a back-to-back user agent (Cisco CUBE, a session border controller): terminates one call leg and originates another, so one call has multiple Call-IDs.</li>
+<li>Q.850 — the ISDN cause-code standard SIP Reason headers use for disconnect causes.</li>
+</ul>
+<h3>Media</h3>
+<ul>
+<li>RTP — the real-time audio/video transport.</li>
+<li>RTCP — RTP's companion control protocol; carries the RECEIVER's loss/jitter reports.</li>
+<li>SSRC — the 32-bit synchronization source id tagging one RTP stream.</li>
+<li>SRTP — encrypted RTP (shown with a lock symbol; payload not decodable).</li>
+<li>DTMF — keypad digits. Usually carried out-of-band as RFC 4733 telephone-events (decoded during analysis, shown in the DTMF column). When instead sent as audio TONES in the media (&quot;in-band&quot;), right-click a stream or call → &quot;Scan for in-band DTMF&quot; decodes that audio on demand and finds them.</li>
+<li>Jitter — variation in packet arrival timing (RFC 3550 interarrival jitter).</li>
+<li>MOS — estimated Mean Opinion Score of voice quality, 1–5 (see &quot;MOS &amp; the E-model&quot;).</li>
+</ul>
+<h3>Network &amp; capture</h3>
+<ul>
+<li>DSCP — the QoS marking in the IP header (EF/46 expected for voice, CS3/24 for signaling, BE/0 = unmarked).</li>
+<li>SPAN — a switch port mirror; the usual capture source, and the reason packets can appear twice (see the dedup setting).</li>
+<li>rDNS / PTR — reverse DNS, IP → hostname.</li>
+<li>RDAP / whois — the lookup that names the carrier/org owning a public IP block.</li>
+<li>JA3 — a fingerprint of a TLS client's handshake, identifying the client stack.</li>
+</ul>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+<div class="topic" id="shortcuts">
+<p class="crumb">Concepts &amp; reference</p>
+<h2>Tips &amp; shortcuts</h2>
+<h3>Fastest ways to work</h3>
+<ul>
+<li>Dark mode: the moon button on the toolbar switches every window immediately and is remembered.</li>
+</ul>
+<ul>
+<li>Hover any column header for its full definition — every column is documented.</li>
+<li>Press F1 on any tab for help about that tab; the Help toolbar button opens this manual at its table of contents.</li>
+<li>Double-click a call or stream to open its detail.</li>
+<li>Click a column header to sort; click again to reverse.</li>
+<li>Right-click almost anything (call, stream, endpoint, packet, TLS/HTTP row) for context actions — cross-tab filters, copy, open detail, copy a Wireshark filter.</li>
+<li>Drag capture files or a folder straight onto the window to analyze.</li>
+<li>&quot;New window&quot; on the toolbar opens a second VoipStudio instance — load a different capture in each to compare two side by side.</li>
+</ul>
+<h3>Finding bad calls fast</h3>
+<ul>
+<li>Sort Calls (or Bad Calls) by Audible Loss % or Poor Audio s — these are the calls a listener actually suffered through, not hold/MOH math loss.</li>
+<li>Sort by Min MOS ascending for the worst estimated quality.</li>
+<li>On Endpoints, sort by Actual loss-in % (packet-weighted) or Bad-audio calls to find which side of the network is hurting.</li>
+<li>On Graphs, use the &quot;worst first&quot; order with a Top N and group by Media path or Media Source IP to see WHERE loss concentrates, then right-click a spike to reach the calls.</li>
+</ul>
+<h3>When something looks empty or wrong</h3>
+<ul>
+<li>Empty HTTP tab → enable HTTP decoding (Settings) and set HTTP ports, then re-analyze.</li>
+<li>Empty carrier/org names → enable whois; empty LAN names → import a hosts file or enable rDNS.</li>
+<li>Unrelated calls merged, or one call split → adjust the correlation tolerances in Settings and re-analyze; use &quot;Find related legs / combine&quot; to inspect.</li>
+</ul>
+<p class="note">The whole app is read-only over your captures — you can click, filter, and export freely without ever changing the underlying data.</p>
+<p class="top"><a href="#top">Back to the list of pages</a></p>
+</div>
+</div>
+</body>
+</html>
