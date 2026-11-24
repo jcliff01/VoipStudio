@@ -1,5 +1,7 @@
 # VoipStudio
 
+**Project credit:** A coworker of mine came up with the original idea for this project.
+
 Windows desktop and command-line tools for inspecting VoIP signaling in packet captures. This repository contains the packaged binaries, [build information](build-info.txt), and [user manual](VoipStudio-Manual.html).
 
 ## Run on Windows
