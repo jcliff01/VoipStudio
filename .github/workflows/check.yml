@@ -1,0 +1,27 @@
+name: Check the command-line tool
+
+# vsx (the command-line analyzer) is built for plain .NET 10, so it can run on macOS and Linux
+# too. This checks that it starts on each system.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vsx:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Run vsx --help
+        shell: bash
+        run: dotnet vsx.dll --help
