@@ -1,7 +1,7 @@
 name: Check the command-line tool
 
 # vsx (the command-line analyzer) is built for plain .NET 10, so it can run on macOS and Linux
-# too. This checks that it starts and passes its self-test on each system.
+# too. This checks that it starts, and analyzes a sample call, on each system.
 on:
   push:
   pull_request:
@@ -25,6 +25,19 @@ jobs:
       - name: Run vsx --help
         shell: bash
         run: dotnet vsx.dll --help
-      - name: Run the built-in self-test
+      # The built-in --selftest needs test captures that aren't in this repository, so it isn't run
+      # here. Instead, analyze a tiny made-up call and check that vsx finds it.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Make a sample call capture
         shell: bash
-        run: dotnet vsx.dll --selftest
+        run: |
+          python -m pip install --quiet scapy
+          python .github/sample/make_pcap.py call.pcap
+      - name: Analyze it
+        shell: bash
+        run: |
+          dotnet vsx.dll analyze call.pcap --calls-csv calls.csv
+          echo "--- calls.csv"; cat calls.csv
+          test "$(wc -l < calls.csv)" -ge 2
