@@ -1,7 +1,7 @@
 name: Check the command-line tool
 
 # vsx (the command-line analyzer) is built for plain .NET 10, so it can run on macOS and Linux
-# too. This checks that it starts on each system.
+# too. This checks that it starts and passes its self-test on each system.
 on:
   push:
   pull_request:
@@ -25,3 +25,6 @@ jobs:
       - name: Run vsx --help
         shell: bash
         run: dotnet vsx.dll --help
+      - name: Run the built-in self-test
+        shell: bash
+        run: dotnet vsx.dll --selftest
