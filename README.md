@@ -4,10 +4,10 @@
 
 VoipStudio opens packet captures of phone traffic (`.pcap`, `.pcapng` or `.cap` files, as saved by Wireshark or tcpdump) and turns them into calls you can read: who called whom, whether the call connected, how the audio sounded, and where something went wrong. It can play a call's audio, draw its call flow, estimate voice quality (MOS), and chart trends across thousands of calls.
 
-It comes in two parts:
+It comes in two parts, both for Windows:
 
-- **VoipStudio.exe**: the desktop program, for Windows.
-- **vsx**: the same analysis from a command line, for Windows, macOS and Linux.
+- **VoipStudio.exe**: the desktop program.
+- **vsx.exe**: the same analysis from a command line.
 
 This repository holds the ready-built program files and the [user manual](VoipStudio-Manual.html); the source code isn't published here.
 
@@ -24,21 +24,13 @@ This repository holds the ready-built program files and the [user manual](VoipSt
 
 **To update:** close VoipStudio and extract the new ZIP over the old folder. Your settings and logs are kept separately (in `%APPDATA%\VoipStudio`).
 
-## macOS and Linux: the command-line tool
+## macOS and Linux
 
-The desktop program is Windows only, but `vsx` runs anywhere .NET 10 does.
-
-1. **Install the .NET 10 Runtime** from [dotnet.microsoft.com/download/dotnet/10.0](https://dotnet.microsoft.com/download/dotnet/10.0): on a Mac, the macOS installer (Arm64 for Apple silicon, x64 for Intel); on Linux, follow Microsoft's [install steps for your distribution](https://learn.microsoft.com/dotnet/core/install/linux).
-2. **Download** the ZIP (green **Code** button → **Download ZIP**) and unzip it.
-3. In a terminal, in that folder, run:
-   ```sh
-   dotnet vsx.dll analyze ~/captures --calls-csv calls.csv
-   ```
-   This prints a summary of every call in the captures and saves one row per call in `calls.csv`, which opens in any spreadsheet program.
+VoipStudio runs on Windows only. On a Mac or Linux computer, run it in a Windows virtual machine (for example Parallels on a Mac, or VirtualBox) and copy your captures there. The command-line tool starts on macOS and Linux with .NET 10, but analyzing a capture fails there, because it uses functions only Windows has.
 
 ## Command-line examples
 
-On Windows, type `vsx.exe` (in the VoipStudio folder). On macOS and Linux, type `dotnet vsx.dll`.
+Open PowerShell or Command Prompt in the VoipStudio folder and type `vsx.exe` followed by a command:
 
 ```sh
 vsx analyze <captures>                                 # summary of every call
@@ -54,7 +46,7 @@ vsx --help                                             # every option
 
 ## Playing iLBC, G.723.1 and AMR audio
 
-Those three audio formats need the free **ffmpeg** program; everything else plays without it. Install it with `winget install Gyan.FFmpeg` (Windows), `brew install ffmpeg` (macOS) or `sudo apt install ffmpeg` (Ubuntu or Debian). On Windows you can instead put it in a folder named `ffmpeg` next to VoipStudio.exe.
+Those three audio formats need the free **ffmpeg** program; everything else plays without it. Install it with `winget install Gyan.FFmpeg`, or put it in a folder named `ffmpeg` next to VoipStudio.exe.
 
 ## Manual
 
@@ -67,7 +59,6 @@ Those three audio formats need the free **ffmpeg** program; everything else play
 | "You must install or update .NET to run this application" | Install the .NET 10 Desktop Runtime (step 1), x64 version. |
 | Windows won't open it | See step 3. Some company PCs block unsigned programs; ask IT. |
 | Some calls play no audio | That codec may need ffmpeg (see above). |
-| `dotnet: command not found` on macOS or Linux | Install the .NET 10 Runtime and open a new terminal. |
 
 ## Privacy
 

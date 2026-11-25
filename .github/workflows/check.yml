@@ -1,7 +1,7 @@
 name: Check the command-line tool
 
-# vsx (the command-line analyzer) is built for plain .NET 10, so it can run on macOS and Linux
-# too. This checks that it starts, and analyzes a sample call, on each system.
+# Checks that vsx (the command-line analyzer) starts and analyzes a made-up sample call on Windows.
+# It is Windows only: on macOS and Linux it starts, but analysis calls Windows' kernel32 and fails.
 on:
   push:
   pull_request:
@@ -12,11 +12,7 @@ permissions:
 
 jobs:
   vsx:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
