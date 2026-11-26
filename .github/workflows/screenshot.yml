@@ -1,0 +1,34 @@
+name: Screenshot
+
+# Opens VoipStudio with the made-up sample call in samples/ and saves a picture of the window to
+# docs/screenshot.png on the branch, for the README.
+on:
+  workflow_dispatch:
+  push:
+    branches: [docs-and-fixes]
+    paths: ['.github/workflows/screenshot.yml', '.github/capture.ps1', 'samples/**']
+
+permissions:
+  contents: write
+
+jobs:
+  screenshot:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Take the screenshot
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force docs | Out-Null
+          ./.github/capture.ps1 -Exe "$PWD\VoipStudio.exe" -Arguments "`"$PWD\samples`"" -Out docs/screenshot.png -Wait 20
+      - name: Save the picture to the branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshot.png
+          git commit -m "Update the README screenshot" || echo "No change"
+          git push
