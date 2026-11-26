@@ -11,7 +11,8 @@ $p = if ($Arguments) { Start-Process -FilePath $Exe -ArgumentList $Arguments -Pa
 for ($i = 0; $i -lt 30 -and $p.MainWindowHandle -eq 0; $i++) { Start-Sleep 1; $p.Refresh() }
 if ($p.MainWindowHandle -ne 0) { [Win]::ShowWindow($p.MainWindowHandle, 3) | Out-Null; [Win]::SetForegroundWindow($p.MainWindowHandle) | Out-Null }
 Start-Sleep $Wait
-$b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+# The working area leaves out the taskbar.
+$b = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea
 $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
 $g = [System.Drawing.Graphics]::FromImage($bmp)
 $g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)

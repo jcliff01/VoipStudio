@@ -4,6 +4,8 @@
 
 VoipStudio opens packet captures of phone traffic (`.pcap`, `.pcapng` or `.cap` files, as saved by Wireshark or tcpdump) and turns them into calls you can read: who called whom, whether the call connected, how the audio sounded, and where something went wrong. It can play a call's audio, draw its call flow, estimate voice quality (MOS), and chart trends across thousands of calls.
 
+![VoipStudio's dashboard after opening the made-up sample call](docs/screenshot.png)
+
 It comes in two parts, both for Windows:
 
 - **VoipStudio.exe**: the desktop program.
@@ -27,6 +29,10 @@ This repository holds the ready-built program files and the [user manual](VoipSt
 ## macOS and Linux
 
 VoipStudio runs on Windows only. On a Mac or Linux computer, run it in a Windows virtual machine (for example Parallels on a Mac, or VirtualBox) and copy your captures there. The command-line tool starts on macOS and Linux with .NET 10, but analyzing a capture fails there, because it uses functions only Windows has.
+
+## Try it with the sample call
+
+The file [`samples/sample-call.pcap`](samples/sample-call.pcap) is one short made-up call (invented numbers and addresses, silent audio). Open it with **Open Files…** to see the dashboard above, then double-click the call on the **Calls** tab to see its call flow.
 
 ## Command-line examples
 
